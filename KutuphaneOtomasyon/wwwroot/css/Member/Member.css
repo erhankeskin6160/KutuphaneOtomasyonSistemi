@@ -1,0 +1,46 @@
+﻿
+table{
+    background-color:white;
+    margin: 3px;
+}
+
+/*table:hover{
+    background-color:#ffd800;
+}
+*/
+
+tr {
+    
+    background-color: #FFFFFF;
+    color: #2D2D9F;
+}
+
+
+  tr:hover, tr:active   {
+        background-color: #2D2D9F;
+        color: #FFFFFF;
+ }
+
+
+.cerceve{
+    content:"";
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    position:relative;
+}
+
+.cerceve img{
+    display:grid;
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    position:absolute;
+   /* top:10px;
+    bottom:155px;*/
+
+}
+
+.cerceve img:hover{
+    transform:scale(1.2,1.2);
+}

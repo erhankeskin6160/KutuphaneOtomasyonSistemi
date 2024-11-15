@@ -1,0 +1,51 @@
+﻿
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.navbar {
+    background-color: #343a40;
+}
+
+.navbar-brand {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+    .navbar-brand:hover {
+        color: #f4f4f4;
+    }
+.heros {
+    background-image: url("/css/HomeController/desktop-wallpaper-library-backgrounds.jpg");
+    background-size: cover;
+    background-position: center;
+    color: #ffffff;
+    text-align: center;
+    padding: 100px 0;
+}
+
+    .heros h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+
+.category-card {
+    background-color: #ffffff;
+    border: none;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+    .category-card:hover {
+        transform: scale(1.05);
+    }
+
+.footer {
+    background-color: #343a40;
+    color: #f4f4f4;
+    text-align: center;
+    padding: 20px;
+}
+
+

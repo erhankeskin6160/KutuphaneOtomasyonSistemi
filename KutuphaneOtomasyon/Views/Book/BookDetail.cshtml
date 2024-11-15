@@ -1,0 +1,110 @@
+﻿@model Book
+
+@{
+    ViewData["Title"] = "BookDetail";
+    Layout = null;
+}
+<style>
+    
+    .kutu
+    {
+        background-color: #fff;
+        border: 2px solid #ddd;
+        padding: 2px;
+        position: relative;
+        padding:2px;
+    }
+
+    body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.header {
+    background-color: #e0f7fa;
+    padding: 20px;
+    text-align: center;
+}
+
+.header h1 {
+    margin: 0;
+    color: #00796b;
+    font-size: 2rem;
+}
+
+.image-section {
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+    background-color: #ffffff;
+}
+
+.image-section img {
+    max-width: 100%;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.description {
+    padding: 20px;
+    font-size: 1rem;
+    color: #444;
+}
+
+.details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 15px 20px;
+    border-top: 1px solid #e0e0e0;
+    background-color: #fafafa;
+}
+
+.details span {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #555;
+}
+
+media (max-width: 600px) {
+    .details {
+        flex-direction: column;
+    }
+}
+
+</style>
+
+<div class="container">
+    <div class="header">
+        <h1>@Model.BookName</h1>
+        <span class="bg-warning text-dark ">Kategori:@Model.Category.CategoryName.ToString()</span>
+    </div>
+    <div class="image-section">
+        <img src="/Resimler/Kitaplar/@Model.BookImage" alt="Kitap Kapak Resmi">
+    </div>
+    <hr />
+    <div class="description">
+        <p>@Model.Description?.ToString();
+    </div>
+    <div class="details">
+        <span>Yazar @Model.Author.AuthorName.ToString();</span> 
+        <span>Yayın Yılı:@Model.Publisher.ToString();</span>
+        <span>Yayınevi: @Model.Publisher.ToString();</span>
+        <span>Sayfa Numarası</span>
+        <span class="bg bg-succes">Kategori:@Model.Category.CategoryName.ToString()</span>
+    </div>
+    </div>
+</div>

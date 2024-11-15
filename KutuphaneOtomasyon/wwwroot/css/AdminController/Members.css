@@ -1,0 +1,27 @@
+﻿ 
+ body{
+     width:1360px;
+ 
+   }
+table {
+    
+   margin-bottom:500px;
+    margin-left: 10px;
+    width: 100%;
+}
+
+th,td {
+    border: 1px solid #ddd; /* Hücreler için kenar */
+    padding: 8px; /* Hücre içindeki boşluk */
+   text-align:center
+
+}
+th{
+    text-align:center
+}
+
+ td>div>img{
+     height:100px;
+     width:100px;
+ }
+ 

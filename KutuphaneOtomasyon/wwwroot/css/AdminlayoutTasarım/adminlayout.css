@@ -1,0 +1,52 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+nav {
+    background-color: #333;
+}
+
+.menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+    .menu > li {
+        position: relative;
+        display: block; /* Dikey görünüm için block yapıyoruz */
+    }
+
+.dropbtn {
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%; /* Butonu tam genişlikte yapıyoruz */
+    text-align: left; /* Metni sola hizala */
+}
+
+    .dropbtn:hover {
+        background-color: #444;
+    }
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    min-width: 160px;
+    z-index: 1;
+}
+
+    .dropdown-content li {
+        list-style: none;
+    }
+
+    .dropdown-content a {
+        color: white;
+        padding: 10px 15px;
+        text-decoration: none;
+        display: block;

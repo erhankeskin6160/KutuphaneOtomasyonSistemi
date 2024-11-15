@@ -1,0 +1,59 @@
+﻿@model List<Book>
+@{
+    ViewData["Title"] = "SearchBook";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+ 
+<html>
+<head>
+    <link href="/css/Book/booklist.css" rel="stylesheet" />
+</head>
+<body>
+
+    <div class="container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
+        @foreach (var item in Model)
+        {
+            <div class="card">
+                <img src="/Resimler/Kitaplar/@item.BookImage" class="card-img-top" alt="Kitap Görseli">
+                <div class="card-body" style="display: flex; flex-direction: column; justify-content: space-between;">
+                    @* <button class="edit-button"> *@
+
+                    <a href="/Admin/EditBook/@item.BookId" class="btn btn-info edit-button">
+                        <i class="fa-solid fa-pencil">
+
+                        </i>
+                    </a>
+                    <a href="/Admin/DeleteBook/@item.BookId" class="btn   deletes-button">
+                        <i class="fa-solid fa-minus"></i>
+                    </a>
+                    @* </button> *@
+
+                    <h5 class="card-title">@item.BookName</h5>
+                    <p class="card-author">Yazar:@item.Author.AuthorName</p>
+                    <p class="card-category">Kategoriy:@item.Category.CategoryName</p>
+                    <div>
+                        <p class="card-publisher" style=" ">
+                            Yayınevi:<span>@item.Publisher</span><img src="/Resimler/Yayınevleriico/timas.ico">
+
+
+                        </p>
+
+
+
+                    </div>
+
+                    <a href="#" class="btn btn-primary" style="width: 100%; margin-top: 3px;">Detay</a>
+
+                </div>
+            </div>
+        }
+    </div>
+
+
+
+</body>
+
+</html>
+
