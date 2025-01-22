@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model List<Book>
+<!DOCTYPE html>
+ 
 <html lang="tr">
 
 <head>
@@ -11,6 +13,27 @@
 
 <body>
 
+    @if(TempData["Message"] != null)
+    
+    {
+        <div id="alert-message" class="alert alert-warning" role="alert">
+             @TempData["Message"]
+         </div>
+        <script>
+            
+            setTimeout(function () {
+                var alertMessage = document.getElementById("alert-message");
+                if (alertMessage) {
+                    alertMessage.style.display = "none";  
+                }
+            },10000);  
+        </script>
+           
+        
+    }
+
+
+     
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
@@ -93,9 +116,17 @@
 
 @*                             <span class="btn btn-danger  col-4" href="/Book/BookDetail/@kitap.AuthorId">Detay</span>
  *@                           <a href="/Book/BookDetail/@kitap.BookId" class="btn btn-danger col-4">Detay</a>
-                            <a href="/Book/BorrowBook/@kitap.BookId" class="btn btn-warning col-4">Ödünç Al</a>
+ @foreach (var item in Model)
+ {
+                            {
+                                
+                            }
+                            <form method="post" asp-action="Borrow" asp-controller="Book">
+                                <input type="hidden" name="BookId" value="@item.BookId" />
+                                <button type="submit">Ödünç Al</button>
+                            </form>
 
-
+ }
                              
                     </div>
                      

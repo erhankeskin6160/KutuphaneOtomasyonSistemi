@@ -25,17 +25,18 @@ namespace KutuphaneOtomasyon.Controllers
        
 
         public IActionResult Index()//Bu sayfada admin panelinde kütüphanede kaç kitap var kaçı ödünç verildi kaç üye var gibi istatiksel cardlar koyulacak
+                                       //Partial Viewler Index.cshtml eklenecek
         {
          var cat=   dbContext.Categories.ToList();
             
             return View(cat);
         }
  
-        public IActionResult Members() //Kütüphanin Üyeleri listeleniyor
-        {
-            var member = dbContext.Users.ToList();
-            return View(member);
-        }
+            public IActionResult Members() //Kütüphanin Üyeleri listeleniyor
+            {
+                var member = dbContext.Users.ToList();
+                return View(member);
+            }
         [HttpGet]
         public IActionResult MemberRegistration() //Adminin yetkisiyle kullanıcı kaydı yapılıyor(kayıt yapamayanlar için)
         {
@@ -78,6 +79,12 @@ namespace KutuphaneOtomasyon.Controllers
             return View(member);
         }
       
+        
+        public IActionResult EditMemberList() 
+        {
+            var memberlist=dbContext.Users.ToList();    
+            return View(memberlist);    
+        }
         
 
         [HttpGet]
@@ -194,7 +201,15 @@ namespace KutuphaneOtomasyon.Controllers
             editbook.CategoryId = book.CategoryId;
             editbook.Author.AuthorName = book.Author.AuthorName;
             editbook.BookImage = book.BookImage;
-           
+            string[] chracter = { "A", "B", "C", "D", "E", "F", "G", "H", "Z", "1", "2", "3", "4" };//Amaç Rastgele DemirBas numarası oluşturmak  yapılmadı yapılacak
+
+            Random random = new Random();
+            editbook.AssetNumber=random.Next().ToString();
+            if (editbook.Category.CategoryName == "Tarih") //Tarih Kategorisi Olan Kitabı T Harfle başlayan Raf Kaydı yapma
+            {
+                editbook.ShelfNumber = "T" + editbook.AssetNumber;
+            }
+
 
             dbContext.SaveChanges();
             return RedirectToAction("Index");
@@ -214,15 +229,15 @@ namespace KutuphaneOtomasyon.Controllers
 
             var addbook = new Book();
 
-            var add1=dbContext.Books.Include(author => author.Author).First();
+            //var add1=dbContext.Books.Include(author => author.Author).First();
 
-            return View(add1);
+            return View( );
         }
         [HttpPost]
-        public IActionResult AddBook(Book book) //kitap eklenen  bilgileri post =ediliyor veri tabanına kaydediyor
+        public IActionResult AddBook(Book book) //kitap eklenen  bilgileri post  ediliyor veri tabanına kaydediyor
         {
 
-            var addbook = dbContext.Books.Include(author => author.Author).First();
+            //var addbook = dbContext.Books.Include(author => author.Author).First();
             var isAuthorAvailable = dbContext.Authors.FirstOrDefault(author => author.AuthorName == book.Author.AuthorName);
             if (isAuthorAvailable!=null)
             {
@@ -279,5 +294,79 @@ namespace KutuphaneOtomasyon.Controllers
                 return View();
             }
         }
+        List<(string Key, string Message)> messages = new();
+        public IActionResult Category() 
+        {
+            var category = dbContext.Categories.ToList();
+            return View(category);
+
+        }
+        [HttpGet]
+        public IActionResult EditCategory(int id) 
+        {
+            var categoryınfo = dbContext.Categories.SingleOrDefault(x => x.CategoryId == id);
+            return View(categoryınfo);
+        }
+        [HttpPost]
+        public IActionResult EditCategory(Category edittcategory)
+        {
+            var categoryınfo = dbContext.Categories.FirstOrDefault(x=>x.CategoryId==edittcategory.CategoryId);
+
+
+            return View(categoryınfo);
+        }
+
+        public IActionResult DeleteCategory(int id) 
+        {
+            
+             dbContext.Categories.Remove(dbContext.Categories.Find(id));
+          var delete = dbContext.SaveChanges();
+            if (delete>0)
+            {
+                messages.Add(("succes","Kategori Başarıyla Silindi"));
+            }
+            else
+            {
+                messages.Add(("danger", "Kategori Silinemedi Tekrar Deneyiniz!!"));
+            }
+           return RedirectToAction("Category");
+        }
+
+        [HttpGet]
+        public IActionResult AddCategory() 
+        {
+          
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddCategory(Category category)
+        {
+            
+             
+            dbContext.Categories.Add(category);
+          var kayıtbaşarılımı = dbContext.SaveChanges();
+          if(kayıtbaşarılımı>0)
+            {
+                messages.Add(("success", "Kategori ekleme işlemi başarılı."));
+
+            }
+            else
+            {
+                messages.Add(("danger", "Kategori eklenemedi!"));
+            }
+            TempData["Messages"] = messages;
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult AuthorList() 
+        {
+            var authorlist=dbContext.Authors.Include(x=>x.Books).ToList();  
+            var categorylist = dbContext.Categories.Select(x => new SelectListItem { Text = x.CategoryName, Value = x.CategoryId.ToString() }).ToList();
+               
+            ViewBag.CategoryList=categorylist;
+            return View(authorlist);
+        }
+        public IActionResult AddAuthor() { return View(); }
+        
     }
 }

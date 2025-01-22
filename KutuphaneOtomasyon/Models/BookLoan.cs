@@ -14,7 +14,7 @@ namespace KutuphaneOtomasyon.Models
         }
         public int Id{ get; set; }
         public int UserId { get; set; }//Kitabın Kimin ALdığını Tutmak İçin
-        public int BookId { get; set; }//Kitap Id
+        public int BookId { get; set; }//Kitap Id hangi kitabın alındığı tutmak için
 
         public DateTime LoanDate { get; set; }//Ödünç Alma Tarihi
 
@@ -24,18 +24,22 @@ namespace KutuphaneOtomasyon.Models
             set { }
         }
 
+        private DateTime? _returnDate;
         public DateTime? ReturnDate
         {
-            get
+            get { return _returnDate; }
+            set
             {
-                if (ReturnDate>DeliveryDate)
+                _returnDate = value;
+                if (_returnDate.HasValue && _returnDate.Value > DeliveryDate)
                 {
-                     //User.Balance += 10;
+                    int overdueDays = (int)(_returnDate.Value - DeliveryDate).TotalDays;
+                    User.Balance += overdueDays * 10; // Her gecikme günü için 10 TL ceza
                 }
-              return ReturnDate;
-            } set { }
-        }//Teslim Edilen Tarihi
-            
+            }
+        }
+        //Teslim Edilen Tarihi
+
         public LoanStatus Status { get; set; }//Ödünç Durumu
 
         public User User { get; set; }

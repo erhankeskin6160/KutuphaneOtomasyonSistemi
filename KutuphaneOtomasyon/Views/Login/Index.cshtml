@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model User
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
 
@@ -20,12 +22,16 @@
 
             <form action="" method="post" class="form">
 
-                <div class="form__field">
-                    <input type="email" placeholder="info@mailaddress.com">
-                </div>
+                <input type="hidden" asp-for="Id" value="" />
+                <input type="hidden" asp-for="Role" value="" />
 
                 <div class="form__field">
-                    <input type="password" placeholder="••••••••••••">
+                    <input type="email" asp-for="Email" placeholder="info@mailaddress.com">
+                </div>
+
+
+                <div class="form__field">
+                    <input type="password" asp-for="Password" placeholder="••••••••••••">
                 </div>
 
                 <div class="form__field">

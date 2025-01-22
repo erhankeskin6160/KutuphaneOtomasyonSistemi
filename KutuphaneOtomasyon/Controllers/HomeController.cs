@@ -13,13 +13,13 @@ namespace KütüphaneOtomasyonSistemi.Controllers
         }
         public IActionResult Index()
         {
-         
+         //Rastgele Önerilen Kitaplar Sayfası 
             Random rnd = new Random();
             var kitapsayisi = dbcontext.Books.Count();
             var sayi=rnd.Next(kitapsayisi);
             var rastgelekitap = dbcontext.Books.Include(Author => Author.Author).Skip(sayi).Take(4).ToList();
             ViewBag.rastgelekitap=rastgelekitap;
-            return View();
+            return View(rastgelekitap);
         }
     }
 }

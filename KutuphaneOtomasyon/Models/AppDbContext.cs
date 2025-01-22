@@ -10,7 +10,7 @@ namespace KutuphaneOtomasyon.Models
         {
 
         }
-
+       
      
 
         public DbSet<Admin> Admins { get; set; }

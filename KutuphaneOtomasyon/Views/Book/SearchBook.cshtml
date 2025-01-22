@@ -45,10 +45,15 @@
                     </div>
 
                     <a href="#" class="btn btn-primary" style="width: 100%; margin-top: 3px;">Detay</a>
+                    <form method="post" asp-action="Borrow" asp-controller="Book">
+                        <input type="hidden" name="BookId" value="@item.BookId" />
+                        <button type="submit">Ödünç Al</button>
+                    </form>
 
                 </div>
             </div>
         }
+       
     </div>
 
 

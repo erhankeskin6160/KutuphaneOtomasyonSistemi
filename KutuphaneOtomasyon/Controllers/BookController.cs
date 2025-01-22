@@ -1,6 +1,7 @@
 ﻿using KutuphaneOtomasyon.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace KutuphaneOtomasyon.Controllers
 {
@@ -30,13 +31,59 @@ namespace KutuphaneOtomasyon.Controllers
         
         {
             var searchbook = context.Books.Include(author=>author.Author).Include(category=>category.Category).Where(book => book.BookName.Contains(key)|| book.Author.AuthorName.Contains(key)).ToList();
+            ViewBag.searchbook = searchbook;
+            if (searchbook.Count==0)
+            {
+
+                TempData["Message"] = "Aranan kitap veya yazar bulunamadı.";
+                return RedirectToAction("Index","Home");   
+            }
             return View(searchbook);
         }
 
-        public IActionResult BorrowBook(int id) 
+        // Ödünç Alma İşlemi
+        [HttpPost]
+        public IActionResult Borrow(int bookId)
         {
-          
-            return View();
+
+            var userclaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userclaim == null)
+            {
+                return Unauthorized("Kullanıcı Oturum Açmadı");
+            }
+            var userıd = Int32.Parse(userclaim.Value);
+            var book = context.Books.FirstOrDefault(b => b.BookId == bookId);
+            if (book == null) return NotFound("Kitap bulunamadı.");
+
+            var user = context.Users.FirstOrDefault(x => x.Id == userıd);
+            if (user == null) return NotFound("Kullanıcı bulunamadı.");
+
+            // Ödünç alma işlemi
+            BookLoan bookLoan = new BookLoan
+            {
+                BookId = bookId,
+                UserId = userıd,
+                LoanDate = DateTime.Now,
+                Status = BookLoan.LoanStatus.Approved,
+                
+            };
+
+            try
+            {
+                context.BookLoans.Add(bookLoan);
+                context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                // Hata mesajını logla
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "Veritabanına veri kaydedilirken bir hata oluştu.");
+            }
+
+            return RedirectToAction("Index", "User");    
         }
     }
 }
+    
+
