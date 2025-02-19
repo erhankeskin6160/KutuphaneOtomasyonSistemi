@@ -1,0 +1,146 @@
+﻿@model User;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kullanıcı Profili</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+            .profile-header img {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                margin-right: 20px;
+            }
+
+            .profile-header .info {
+                font-size: 16px;
+            }
+
+                .profile-header .info h2 {
+                    margin: 0;
+                    font-size: 24px;
+                }
+
+                .profile-header .info p {
+                    margin: 5px 0;
+                }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 8px;
+                font-size: 14px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+        .info-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .form-group .small {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .submit-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            .submit-btn:hover {
+                background-color: #0056b3;
+            }
+    </style>
+    
+</head>
+
+<body>
+    <div class="container">
+        <div class="profile-header">
+            <img src="https://via.placeholder.com/100" alt="Profil Fotoğrafı">
+            <div class="info">
+                <h2>ERHAN KESKİN</h2>
+                <p>Üye Kodu: 02020212017</p>
+                <p>Grubu: Öğrenci</p>
+                <p>Ödünç Gün Sınırı: 15</p>
+            </div>
+        </div>
+
+        <form method="get" action="profile">
+            <input type="hidden" asp-for="Id" value="" />
+            <div class="form-group">
+                <label for="email">E-Posta</label>
+                <input type= asp-for="Email" value="" />
+            </div>
+
+            <div class="form-group">
+                <label for="dob">Doğum Tarihi</label>
+@*                 <input type="date" asp-for="">
+ *@            </div>
+
+            <div class="form-group">
+                <label for="phone">Telefon</label>
+                <input type="tel" id="phone" value="5342600561">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Şifre</label>
+                <input type="password" id="password" placeholder="Şifrenizi girin">
+                <p class="small">Şifreniz en az bir büyük ve küçük harf, rakam ve özel karakter içermelidir.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm-password">Şifre Kontrol</label>
+                <input type="password" id="confirm-password" placeholder="Şifrenizi tekrar girin">
+            </div>
+
+            <div class="form-group">
+                <label for="interests">İlgi Alanlarım</label>
+                <input type="text" id="interests" placeholder="İlgi alanlarınızı girin">
+                <p class="info-text">Kütüphaneye yeni gelen yayınlarla ilgili bildirim almak için ilgi alanlarınızı girin.</p>
+            </div>
+
+            <button type="submit" class="submit-btn">Güncelle</button>
+        </form>
+    </div>
+</body>
+</html>

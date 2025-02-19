@@ -51,7 +51,7 @@
                         <a class="nav-link" href="#">Kitaplar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Üye Paneli</a>
+                        <a class="nav-link" href="/Login/Index">Üye Paneli</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Admin Paneli</a>
@@ -116,17 +116,19 @@
 
 @*                             <span class="btn btn-danger  col-4" href="/Book/BookDetail/@kitap.AuthorId">Detay</span>
  *@                           <a href="/Book/BookDetail/@kitap.BookId" class="btn btn-danger col-4">Detay</a>
- @foreach (var item in Model)
- {
+ 
                             {
                                 
                             }
                             <form method="post" asp-action="Borrow" asp-controller="Book">
+                                @foreach (var item in Model)
+                                {
                                 <input type="hidden" name="BookId" value="@item.BookId" />
+                                }
+
                                 <button type="submit">Ödünç Al</button>
                             </form>
 
- }
                              
                     </div>
                      

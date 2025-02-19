@@ -1,4 +1,5 @@
 using KutuphaneOtomasyon.Models;
+using KutuphaneOtomasyon.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +23,8 @@ builder.Services.AddAuthentication("Cookies") // Varsayýlan kimlik doðrulama þem
     });
 
 builder.Services.AddAuthorization(); // Authorization middleware
+
+builder.Services.AddScoped<IsbnService>();
 
 
 

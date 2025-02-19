@@ -9,6 +9,7 @@ using NuGet.Packaging.Signing;
 using System.Runtime.InteropServices;
 using static System.Net.Mime.MediaTypeNames;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using KutuphaneOtomasyon.Services;
 
 namespace KutuphaneOtomasyon.Controllers
 {
@@ -17,10 +18,12 @@ namespace KutuphaneOtomasyon.Controllers
         private int a;
 
         private AppDbContext dbContext;
-        public AdminController(AppDbContext appDbContext)
+        private IsbnService _ısbnService;
+        public AdminController(AppDbContext appDbContext,IsbnService ısbnService)
         {
            var db = appDbContext;
             dbContext = db;
+            _ısbnService = ısbnService;
         }
        
 
@@ -262,7 +265,16 @@ namespace KutuphaneOtomasyon.Controllers
 
           
             book.BookImage=kitapresim; ;
-            dbContext.Books.Add(book);
+            if (ModelState.IsValid==false)
+            {
+                if (string.IsNullOrEmpty(book.ISBN))
+                {
+                    book.ISBN = _ısbnService.GenerateISBN();//Böyle kitap eklenirken ISBN değeri verilmediğinde otomatik olarak ISBN Değerini atayacaktır
+                }
+                dbContext.Books.Add(book);
+
+
+            }
             var kayıtsayısı =  dbContext.SaveChanges();
             if (kayıtsayısı>0)
             {
@@ -366,7 +378,46 @@ namespace KutuphaneOtomasyon.Controllers
             ViewBag.CategoryList=categorylist;
             return View(authorlist);
         }
-        public IActionResult AddAuthor() { return View(); }
-        
+        [HttpGet]
+        public IActionResult AddAuthor() 
+        {
+
+            return View(); 
+        }
+        [HttpPost]
+        public IActionResult AddAuthor(Author author)
+        {
+            dbContext.Add(author);
+            dbContext.SaveChanges();
+
+
+            return View();
+
+        }
+
+        public IActionResult DeleteAuthor(int id) 
+        {
+           var author= dbContext.Authors.Find(id);
+            dbContext.Remove(author);
+            dbContext.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public IActionResult EditAuthor() 
+        {
+            return View();
+
+
+        }
+        [HttpPost]
+        public IActionResult EditAuthor(Author author)
+        {
+            var aut = dbContext.Authors.Find(author.Id);
+            aut.AuthorName = author.AuthorName;
+            dbContext.SaveChanges();
+            return RedirectToAction("Index");
+
+
+        }
     }
 }
