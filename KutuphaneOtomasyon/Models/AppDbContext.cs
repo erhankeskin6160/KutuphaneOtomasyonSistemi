@@ -25,5 +25,7 @@ namespace KutuphaneOtomasyon.Models
         public DbSet<User> Users { get; set; }
 
         public DbSet<Author> Authors { get; set; }
+
+        public DbSet<Notifications> Notifications { get; set; }
     }
 }

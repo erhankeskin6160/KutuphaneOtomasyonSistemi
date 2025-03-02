@@ -1,0 +1,23 @@
+﻿@model List<BookLoan>
+@{
+    ViewData["Title"] = "Index";
+    Layout =null;
+}
+
+<br />
+<h2>Kitap Geçmişim</h2>
+<br />
+<table class="table table-bordered">
+    <tr>
+        <th>Kitap Adı</th>
+        <th>Alış Tarihi</th>
+        <th>Üye İade Tarihi</th>
+    </tr>
+    @foreach (var book in Model)
+    {
+        <tr>
+            <td>@book.Book.BookName</td>
+            <td>@book.DeliveryDate</td>
+        </tr>
+    }
+</table>

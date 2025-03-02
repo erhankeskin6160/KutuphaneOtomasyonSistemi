@@ -419,5 +419,46 @@ namespace KutuphaneOtomasyon.Controllers
 
 
         }
+
+        public IActionResult Notifications() 
+        {
+            var notifacations = dbContext.Notifications.ToList();
+            return View(notifacations);
+        }
+        [HttpGet]
+        public IActionResult AddNotifications() 
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddNotifications(Notifications addnotifications) 
+
+        {
+            var notifacations = dbContext.Notifications.Add(addnotifications);
+            dbContext.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        public IActionResult DeleteNotifications(int id)
+        {
+            var notifacations = dbContext.Notifications.Find(id);
+            dbContext.Remove(notifacations);
+            dbContext.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        public IActionResult DetailNotifications(Notifications notifications) 
+        {
+            var notifacations = dbContext.Notifications.Find(notifications.Id);
+            return View(notifacations);
+        }
+        public IActionResult EditNotifications(Notifications _notifications)
+        {
+            var notifacations = dbContext.Notifications.Find(_notifications.Id);
+            notifacations.Subject = _notifications.Subject;
+            notifacations.Content = _notifications.Content;
+            notifacations.dateTime = _notifications.dateTime;
+                dbContext.SaveChanges();
+            return View(notifacations);
+        }
+
     }
 }

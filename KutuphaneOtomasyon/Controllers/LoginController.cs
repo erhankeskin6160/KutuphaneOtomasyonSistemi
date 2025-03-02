@@ -77,5 +77,8 @@ public class LoginController : Controller
 
             return RedirectToAction("Search", new { query = "" }); // Arama sayfasına dön
         }
+
+
+
     }
 }
