@@ -1,97 +1,145 @@
-﻿﻿
+﻿@{
+    Layout = null;
+}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Mvc6 Online Ticari Otomasyon</title>
-    <link href="/css/styles.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
-    <link href="/fontawesome-free-6.5.2-web/css/all.css" rel="stylesheet">
-    <link href="/fontawesome-free-6.5.2-web/css/all.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Mvc5 ile Kütüphane Sistemi</title>
 
+    <!-- Bootstrap core CSS -->
+    <link href="~/css/Profile/bootstrap.min.css"  rel="stylesheet">
+    <!-- FontAwesome (Zil ikonu için) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Custom styles for this template -->
+    <link href="~/css/Profile/profile.css" rel="stylesheet">
 
+    <style>
+        /* Bildirim Zilinin Konumlandırılması */
+        .notification-icon {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 22px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 5px;
+            left: 35px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 8px;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
 
-    <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                <div class="sb-sidenav-menu">
-                    <div class="nav">
-                        <div class="sb-sidenav-menu-heading">İşlemler</div>
+    <div class="d-flex" id="wrapper">
 
-
-
-                        <a class="nav-link" href="/User/Profile">
-                            <div>
-                                <i class="fa-solid fa-user"></i>
-                                Profilim
+        <!-- Sidebar -->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading">
+                Öğrenci Paneli
+                <!-- Bildirim Zili -->
+                <i class="fa-solid fa-bell notification-icon"></i>
+                <span id="notification-count" class="notification-badge d-none">0</span>
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="/Panelim/Index/" class="list-group-item list-group-item-action bg-light">Profilim</a>
+                <a href="/Message/Index/" class="list-group-item list-group-item-action bg-light">Gelen Mesajlar</a>
+                <a href="/Message/SentMessage/" class="list-group-item list-group-item-action bg-light">Giden Mesajlar</a>
+                <a href="/Message/NewMessage/" class="list-group-item list-group-item-action bg-light">Yeni Mesaj</a>
+                <a href="/Profile/Notifications/" class="list-group-item list-group-item-action bg-light">Duyurular</a>
+                <a href="/Profile/MyBook/" class="list-group-item list-group-item-action bg-light">Kitaplarım</a>
+                <a href="/Vitrin/Index/" class="list-group-item list-group-item-action bg-light">Vitrin</a>
+                <a href="/Profile/Logout/" class="list-group-item list-group-item-action bg-light">Çıkış Yap</a>
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <button class="btn btn-primary" id="menu-toggle">Menü</button>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/Vitrin/Index/#about">Hakkımızda <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Ayarlar
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/Panelim/Index/">Hesabım</a>
+                                <a class="dropdown-item" href="/Panelim/LogOut/">Çıkış Yap</a>
+                                <div class="dropdown-divider"></div>
                             </div>
-                        </a>
-
-                        <a class="nav-link" href="/CurrentPanel/MyOrder">
-                            <div>
-
-                                <i class="fa-solid fa-box-open"></i>
-
-                                Siparişlerim
-                            </div>
-                        </a>
-
-
-                        <a class="nav-link" href="/CargoTracking/Index">
-                            <div>
-                                <i class="fa-solid fa-truck"></i>
-                                Kargo
-                            </div>
-                        </a>
-
-
-                        <a class="nav-link" href="/CurrentPanel/Message">
-                            <div>
-                                <i class="fa-solid fa-envelope"></i>
-                                Mesajlar
-                            </div>
-                        </a>
-
-                        <a class="nav-link" href="/CurrentPanel/Logout">
-                            <div>
-                                <i class="fa-solid fa-right-from-bracket"></i>
-                                Çıkış
-                            </div>
-                        </a>
-
-
-                    </div>
-
+                        </li>
+                    </ul>
+                </div>
             </nav>
+            <div class="container-fluid">
+                @RenderBody()
+            </div>
         </div>
-        <div id="layoutSidenav_content">
-            <main>
-                <div class="container-fluid">
-                    @RenderBody()
-                </div>
-            </main>
-            <footer class="py-4 bg-light mt-auto">
-                <div class="container-fluid">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; Your Website 2024</div>
-                        <div>
-                            <a href="#">Privacy Policy</a>
-                            &middot;
-                            <a href="#">Terms &amp; Conditions</a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
-        </div>
+        <!-- /#page-content-wrapper -->
     </div>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="js/scripts.js"></script>
+    <!-- /#wrapper -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="~/webpanel/vendor/jquery/jquery.min.js"></script>
+    <script src="~/webpanel/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Bildirim Güncelleme Scripti -->
+    <script>
+        $(document).ready(function () {
+            function fetchNotifications() {
+                $.ajax({
+                    url: '/Panelim/GetUnreadNotifications', // Burada, bildirimi getiren controller metodu çağrılıyor
+                    type: 'GET',
+                    success: function (data) {
+                        let count = data.unreadCount; // Backend'den dönen okunmamış bildirim sayısı
+                        if (count > 0) {
+                            $("#notification-count").text(count).removeClass("d-none");
+                        } else {
+                            $("#notification-count").addClass("d-none");
+                        }
+                    },
+                    error: function () {
+                        console.log("Bildirimler alınırken hata oluştu.");
+                    }
+                });
+            }
+
+            // Sayfa yüklendiğinde bildirimi getir
+            fetchNotifications();
+
+            // Her 30 saniyede bir bildirimi güncelle
+            setInterval(fetchNotifications, 30000);
+        });
+
+        // Menü Açma/Kapatma
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+
+        // Bildirim ziline tıklanınca duyurular sayfasına git
+        $(".notification-icon").click(function () {
+            window.location.href = "/Panelim/Duyurular/";
+        });
+    </script>
+
 </body>
 </html>

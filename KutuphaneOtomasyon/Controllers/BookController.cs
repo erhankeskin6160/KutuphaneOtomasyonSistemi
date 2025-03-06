@@ -20,14 +20,14 @@ namespace KutuphaneOtomasyon.Controllers
         }
 
         [HttpGet]   
-        public IActionResult BookDetail(int id)
+        public IActionResult BookDetail(int id)//Kitap bilgisi künyesi 
         {
 
             var book = context.Books.Include(x => x.Author).Include(c=>c.Category).Where(book => book.BookId == id).FirstOrDefault();
           
             return View(book);
         }
-        public IActionResult SearchBook(string key) 
+        public IActionResult SearchBook(string key) //Kitap arama sistemi
         
         {
             var searchbook = context.Books.Include(author=>author.Author).Include(category=>category.Category).Where(book => book.BookName.Contains(key)|| book.Author.AuthorName.Contains(key)).ToList();
@@ -43,7 +43,7 @@ namespace KutuphaneOtomasyon.Controllers
 
         // Ödünç Alma İşlemi
         [HttpPost]
-        public IActionResult Borrow(int bookId)
+        public IActionResult Borrow(int bookId) //Kitap Ödünç Alma sistemi
         {
 
             var userclaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
@@ -67,6 +67,7 @@ namespace KutuphaneOtomasyon.Controllers
                 LoanDate = DateTime.Now,
                 Status = BookLoan.LoanStatus.Approved,
                 
+               
             };
 
             try
@@ -83,6 +84,28 @@ namespace KutuphaneOtomasyon.Controllers
 
             return RedirectToAction("Index", "User");    
         }
+        public IActionResult ReturnBook(int loanıd) 
+        {
+            var bookloan=context.BookLoans.Include(x=>x.Book).FirstOrDefault(x => x.Id == loanıd);
+            if (bookloan!=null)
+            {
+                bookloan.Status=BookLoan.LoanStatus.Returned;
+                bookloan.ReturnDate = DateTime.Now;
+                bookloan.Book.Quantity = +1; //İade edilen kitabın stok miktari güncellendi
+                context.SaveChanges();
+                TempData["SuccesReturnDate"] = "Kitap Başarıyla İade Edildi";
+
+
+            }
+            else
+            {
+                TempData["ErrorReturnDate"] = "Kitap İade Edilemedi";
+            }
+
+            return RedirectToAction("MyBook", "Profile");
+        }
+
+
     }
 }
     

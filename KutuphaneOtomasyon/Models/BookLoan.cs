@@ -34,7 +34,8 @@ namespace KutuphaneOtomasyon.Models
                 if (_returnDate.HasValue && _returnDate.Value > DeliveryDate)
                 {
                     int overdueDays = (int)(_returnDate.Value - DeliveryDate).TotalDays;
-                    User.Balance += overdueDays * 10; // Her gecikme günü için 10 TL ceza
+
+                    PenaltyFee(overdueDays);
                 }
             }
         }
@@ -44,6 +45,14 @@ namespace KutuphaneOtomasyon.Models
 
         public User User { get; set; }
         public Book Book { get; set; }
+
+
+        public void PenaltyFee(int overdueDays) 
+        {
+            var Total= overdueDays * 10;
+            User.Balance += Total;
+            
+        }
     }
     //Ödünç Alma Sistemi
 }

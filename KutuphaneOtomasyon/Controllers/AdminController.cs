@@ -41,7 +41,7 @@ namespace KutuphaneOtomasyon.Controllers
                 return View(member);
             }
         [HttpGet]
-        public IActionResult MemberRegistration() //Adminin yetkisiyle kullanıcı kaydı yapılıyor(kayıt yapamayanlar için)
+        public IActionResult MemberRegistration() //Adminin yetkisiyle kullanıcı kaydı yapılıyor(kayıt yapamayanlar için yetklili kayıt yapıyor)
         {
 
             return View();
@@ -160,7 +160,7 @@ namespace KutuphaneOtomasyon.Controllers
     
         [HttpPost]
       
-        public IActionResult EditBook(Book book) 
+        public IActionResult EditBook(Book book) // Kitap güncelleniyor
         {
 
             int id =(int)ViewBag.BookId.Value;
@@ -307,14 +307,14 @@ namespace KutuphaneOtomasyon.Controllers
             }
         }
         List<(string Key, string Message)> messages = new();
-        public IActionResult Category() 
+        public IActionResult Category() // Kitap kategorileri admin paneline listeleniyor
         {
             var category = dbContext.Categories.ToList();
             return View(category);
 
         }
         [HttpGet]
-        public IActionResult EditCategory(int id) 
+        public IActionResult EditCategory(int id) //Kitap kategori ismi düzenleniyor
         {
             var categoryınfo = dbContext.Categories.SingleOrDefault(x => x.CategoryId == id);
             return View(categoryınfo);
@@ -328,7 +328,7 @@ namespace KutuphaneOtomasyon.Controllers
             return View(categoryınfo);
         }
 
-        public IActionResult DeleteCategory(int id) 
+        public IActionResult DeleteCategory(int id) // Kitap kategorisi silinyor
         {
             
              dbContext.Categories.Remove(dbContext.Categories.Find(id));
@@ -345,7 +345,7 @@ namespace KutuphaneOtomasyon.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddCategory() 
+        public IActionResult AddCategory() //Kategori ekleniyor
         {
           
             return View();
@@ -370,7 +370,7 @@ namespace KutuphaneOtomasyon.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult AuthorList() 
+        public IActionResult AuthorList() //Kitapların yazarları listeleniyor
         {
             var authorlist=dbContext.Authors.Include(x=>x.Books).ToList();  
             var categorylist = dbContext.Categories.Select(x => new SelectListItem { Text = x.CategoryName, Value = x.CategoryId.ToString() }).ToList();
@@ -379,7 +379,7 @@ namespace KutuphaneOtomasyon.Controllers
             return View(authorlist);
         }
         [HttpGet]
-        public IActionResult AddAuthor() 
+        public IActionResult AddAuthor() //Yazar ekleniyor
         {
 
             return View(); 
@@ -395,7 +395,7 @@ namespace KutuphaneOtomasyon.Controllers
 
         }
 
-        public IActionResult DeleteAuthor(int id) 
+        public IActionResult DeleteAuthor(int id) //Yazar siliniyor veritabanından
         {
            var author= dbContext.Authors.Find(id);
             dbContext.Remove(author);
@@ -410,7 +410,7 @@ namespace KutuphaneOtomasyon.Controllers
 
         }
         [HttpPost]
-        public IActionResult EditAuthor(Author author)
+        public IActionResult EditAuthor(Author author)//Veri tabanında yazar bilgisini güncelleniyor
         {
             var aut = dbContext.Authors.Find(author.Id);
             aut.AuthorName = author.AuthorName;
@@ -420,13 +420,13 @@ namespace KutuphaneOtomasyon.Controllers
 
         }
 
-        public IActionResult Notifications() 
+        public IActionResult Notifications() // Kütüphane bildiri sistemi
         {
             var notifacations = dbContext.Notifications.ToList();
             return View(notifacations);
         }
         [HttpGet]
-        public IActionResult AddNotifications() 
+        public IActionResult AddNotifications() //Kütüphane biliri yayınlıyor
         {
             return View();
         }
@@ -450,7 +450,7 @@ namespace KutuphaneOtomasyon.Controllers
             var notifacations = dbContext.Notifications.Find(notifications.Id);
             return View(notifacations);
         }
-        public IActionResult EditNotifications(Notifications _notifications)
+        public IActionResult EditNotifications(Notifications _notifications)//Bildiri içeriği düzenleniyor
         {
             var notifacations = dbContext.Notifications.Find(_notifications.Id);
             notifacations.Subject = _notifications.Subject;
