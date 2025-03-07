@@ -1,0 +1,49 @@
+﻿ 
+---
+
+### 🚀 **Neler Yaptık? (Kütüphane Otomasyonu)**  
+1. 📚 **Kitap Alma ve İade:**  
+   - Kullanıcılar kitap aldı ve iade etti.  
+   - 🕒 **Gecikme Cezası:** Geciken kitaplar için günlük 10 TL ceza ekledik.  
+   - 🗓️ `ReturnDate` ve `LoanStatus` gibi alanlar ekledik.  
+
+2. 🗂️ **Kategori ve Filtreleme:**  
+   - 📋 Kitap listelerinde filtreleme yaptık (isim araması).  
+   - 🛠️ Kategori filtrelemeyi kaldırdık ve sadeleştirdik.  
+
+3. 📦 **Demirbaş ve Raf Sistemi:**  
+   - 📚 **Raf Numarası:** ISBN ve demirbaş numarası ile raf sistemi kurduk.  
+   - 🏷️ `ShelfNumber` ve `ISBN` ile kitapların düzenini sağladık.  
+
+4. 🌐 **Kullanıcı Kitaplarım Sayfası:**  
+   - 📸 Kitap resmi, aldı tarihi ve teslim tarihi gösterdik.  
+   - 🔄 Sayfalama sistemi yaptık ama birkaç sorun yaşadık.  
+   - 🔍 `Contains` ile isim arama ve filtrelemeyi geliştirdik.  
+
+ 5. 📚 Kitap Alma Sınırı:
+
+🔢 Her kullanıcı en fazla 3 kitap alabilecek.
+🛑 3 kitap dolduğunda yeni kitap alamaması için kontrol ekleyeceğiz.
+Bu da tamam! 💪📚🚦
+---
+
+### 🌟 **Neler Yapacağız? (Kütüphane Otomasyonu)**  
+1. 🛠️ **Ceza Sistemini Geliştirme:**  
+   - 💸 Ceza hesaplamasını modelde mi yoksa controller’da mı yapacağımıza karar vereceğiz.  
+   - 🗓️ Ceza geçmişi ve kullanıcı bakiyesi takibi ekleyeceğiz.  
+
+2. 🛒 **Kitap Alma İşlemleri:**  
+   - 📚 Kullanıcının `userId` ile ISBN ve raf numarasını kontrol ederek kitap alma işlemini daha güvenli yapacağız.  
+   - 🔄 Stok kontrolü ve aynı anda birden fazla kitap alma.  
+
+3. 📊 **İstatistik ve Raporlama:**  
+   - 📈 Hangi kitaplar daha çok okunuyor, en çok geciken kitaplar gibi analizler.  
+   - 🏷️ Kullanıcı başına okunan kitap ve ceza raporları.  
+
+4. 🌐 **Arayüz ve Kullanıcı Deneyimi:**  
+   - 🎨 Daha estetik ve kullanıcı dostu bir tasarım.  
+   - 🖼️ Kitap kapakları ve daha fazla detay ile zenginleştirilmiş sayfalar.  
+
+---
+
+✨ Daha yapacak çok iş var ama sağlam ilerliyoruz! 💪📚🚀

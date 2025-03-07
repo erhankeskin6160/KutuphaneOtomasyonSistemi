@@ -12,7 +12,7 @@
     <title>Mvc5 ile Kütüphane Sistemi</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="~/css/Profile/bootstrap.min.css"  rel="stylesheet">
+    <link href="~/css/Profile/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome (Zil ikonu için) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- Custom styles for this template -->
@@ -55,13 +55,13 @@
             </div>
             <div class="list-group list-group-flush">
                 <a href="/Panelim/Index/" class="list-group-item list-group-item-action bg-light">Profilim</a>
-                <a href="/Message/Index/" class="list-group-item list-group-item-action bg-light">Gelen Mesajlar</a>
-                <a href="/Message/SentMessage/" class="list-group-item list-group-item-action bg-light">Giden Mesajlar</a>
-                <a href="/Message/NewMessage/" class="list-group-item list-group-item-action bg-light">Yeni Mesaj</a>
-                <a href="/Profile/Notifications/" class="list-group-item list-group-item-action bg-light">Duyurular</a>
-                <a href="/Profile/MyBook/" class="list-group-item list-group-item-action bg-light">Kitaplarım</a>
+                <a href="/Mesajlar/Index/" class="list-group-item list-group-item-action bg-light">Gelen Mesajlar</a>
+                <a href="/Mesajlar/Giden/" class="list-group-item list-group-item-action bg-light">Giden Mesajlar</a>
+                <a href="/Mesajlar/YeniMesaj/" class="list-group-item list-group-item-action bg-light">Yeni Mesaj</a>
+                <a href="/Panelim/Duyurular/" class="list-group-item list-group-item-action bg-light">Duyurular</a>
+                <a href="/Panelim/Kitaplarim/" class="list-group-item list-group-item-action bg-light">Kitaplarım</a>
                 <a href="/Vitrin/Index/" class="list-group-item list-group-item-action bg-light">Vitrin</a>
-                <a href="/Profile/Logout/" class="list-group-item list-group-item-action bg-light">Çıkış Yap</a>
+                <a href="/Panelim/LogOut/" class="list-group-item list-group-item-action bg-light">Çıkış Yap</a>
             </div>
         </div>
         <!-- /#sidebar-wrapper -->
@@ -98,8 +98,8 @@
     </div>
     <!-- /#wrapper -->
     <!-- Bootstrap core JavaScript -->
-    <script src="~/webpanel/vendor/jquery/jquery.min.js"></script>
-    <script src="~/webpanel/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/css/Profile/vendor/jquery/jquery.min.js"></script>
+    <script src="~/css/Profile/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Bildirim Güncelleme Scripti -->
     <script>

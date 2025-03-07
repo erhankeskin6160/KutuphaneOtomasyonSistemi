@@ -4,6 +4,21 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+
+
+
+<form asp-action="GetBookByISBN" method="get">
+    <input type="text" name="isbn" placeholder="ISBN ile Kitap Ara" required />
+    <button type="submit">Kitap Ekle</button>
+</form>
+
+@if (TempData["SuccesAddBook"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccesAddBook"]</div>
+}
+@if (TempData["ErrorAddBook"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorAddBook"]</div>
+}
 
 

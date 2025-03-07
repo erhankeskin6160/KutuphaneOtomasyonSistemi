@@ -16,9 +16,9 @@ namespace KutuphaneOtomasyon.Models
         public string? Description { get; set; }//Açıklama
         public string ISBN { get; set; }   //ISBN
 
-        public string AssetNumber { get; set ; }//Demirbaş Numarası
+        public string? AssetNumber { get; set ; }//Demirbaş Numarası
 
-        public string Publisher { get; set; }//Yayınevi
+        public string ?Publisher { get; set; }//Yayınevi
 
        public string? ShelfNumber { get; set; }  //Raf Numarası  raf numarası kategory ve demirbaşa ismine göre alacak
 

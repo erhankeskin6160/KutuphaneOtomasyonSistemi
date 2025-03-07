@@ -30,7 +30,26 @@
 
 
 }
+@if (TempData["ErrorBookTotal"] != null)
 
+{
+    <div id="succes-message" class="alert alert-danger" role="alert">
+        @TempData["ErrorBookTotal"]
+    </div>
+    <script>
+
+        setTimeout(function () {
+            var alertMessage = document.getElementById("succes-message");
+            if (alertMessage) {
+                alertMessage.style.display = "none";
+            }
+        },10000);
+    </script>
+
+
+}
+
+ 
 
 
 
