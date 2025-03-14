@@ -1,4 +1,4 @@
-﻿namespace KutuphaneOtomasyon.Models.Models
+﻿namespace KutuphaneOtomasyon.Models
 {
   public  class Admin 
     {

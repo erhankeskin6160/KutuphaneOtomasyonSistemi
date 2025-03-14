@@ -1,0 +1,30 @@
+﻿@model List<CartItem>
+<h2>Sepetiniz</h2>
+<table>
+    <tr>
+        <th>Kitap Adı</th>
+        <th>Yazar</th>
+        <th>İşlem</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Book.BookName</td>
+            <td>@item.Book.Author.AuthorName</td>
+            <td>
+
+
+                <form asp-controller="Cart" asp-action="RemoveToCart" method="post" style="display:inline;">
+                    <input type="hidden" name="BookId" value="@item.BookId" />
+                    <button type="submit" class="btn btn-danger">Kaldır</button>
+                </form>
+
+
+            </td>
+        </tr>
+    }
+</table>
+
+<form asp-action="CheckoutCartItems" asp-controller="Cart" method="post">
+    <button type="submit">Ödünç Al</button>
+</form>

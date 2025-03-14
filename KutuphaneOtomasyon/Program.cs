@@ -1,7 +1,12 @@
+using KutuphaneOtomasyon;
 using KutuphaneOtomasyon.Models;
 using KutuphaneOtomasyon.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NETCore.MailKit;
+using NETCore.MailKit.Core;
+using NETCore.MailKit.Extensions;
+using NETCore.MailKit.Infrastructure.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +20,8 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("User", policy => policy.RequireRole("User"));
 });
 
+ 
+
 builder.Services.AddAuthentication("Cookies") // Varsayýlan kimlik doðrulama þemasý
     .AddCookie("Cookies", options =>
     {
@@ -22,10 +29,17 @@ builder.Services.AddAuthentication("Cookies") // Varsayýlan kimlik doðrulama þem
         options.AccessDeniedPath = "/AccessDenied"; // Yetkisiz eriþim
     });
 
-builder.Services.AddAuthorization(); // Authorization middleware
 
+
+builder.Services.AddAuthorization();  
+builder.Logging.AddConsole();
 builder.Services.AddScoped<IsbnService>();
+builder.Services.AddScoped<Cezaservice>();
+builder.Services.AddScoped<CezaArkaPlanService>();
+builder.Services.AddHostedService<CezaArkaPlanService>();
+builder.Services.AddTransient<IEmailService, EmailService>();
 
+ 
 
 
 builder.Services.AddSession(options =>
@@ -49,14 +63,29 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-app.UseSession(); // Oturum middleware
-app.UseAuthentication(); // Authentication middleware
-app.UseAuthorization();  // Authorization middleware
-
+app.UseSession();  
+app.UseAuthentication();  
+app.UseAuthorization();   
 
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-  app.Run();
+ 
+
+app.MapControllerRoute(
+    name: "Login",
+    pattern: "Login",
+    defaults: new { controller = "Login", action = "Login" }
+
+
+);
+app.MapControllerRoute(
+    name: "Login",
+    pattern: "AdminGiris",
+    defaults: new { controller = "Admin", action = "Login" }
+
+
+);
+app.Run();

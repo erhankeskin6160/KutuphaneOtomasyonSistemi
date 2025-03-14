@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace KutuphaneOtomasyon.Controllers
 {
-    public class BookController: Controller
+    public class BookController : Controller
     {
 
         AppDbContext context;
@@ -16,79 +16,14 @@ namespace KutuphaneOtomasyon.Controllers
             this.context = context;
         }
 
-        public async Task<IActionResult> GetAllBooks()
-        {
-            // OpenLibrary API URL'sini oluşturuyoruz.
-            string apiUrl = "https://openlibrary.org/works/OL362778W.json";  // Örnek çalışma ID'si
 
-            using (var client = new HttpClient())
-            {
-                var response = await client.GetAsync(apiUrl);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var json = await response.Content.ReadAsStringAsync();
-                    var books = JsonConvert.DeserializeObject<List<Book>>(json);
-
-                    if (books != null && books.Any())
-                    {
-                        foreach (var bookInfo in books)
-                        {
-                            // Yazar kontrolü
-                            var author = context.Authors.FirstOrDefault(a => a.AuthorName == bookInfo.Author.AuthorName);
-                            if (author == null)
-                            {
-                                author = new Author { AuthorName = bookInfo.Author.AuthorName };
-                                context.Authors.Add(author);
-                            }
-
-                            // Kategori kontrolü (burada bir kategori belirlememiz lazım)
-                            var category = context.Categories.FirstOrDefault(c => c.CategoryName == bookInfo.Category.CategoryName);
-                            if (category == null)
-                            {
-                                category = new Category { CategoryName= bookInfo.Category.CategoryName };  // Kategoriyi veritabanına ekliyoruz
-                                context.Categories.Add(category);
-                            }
-
-                            // Kitap verisini hazırlıyoruz
-                            var book = new Book
-                            {
-                                BookName = bookInfo.BookName,
-                                ISBN = bookInfo.ISBN,
-                                Publisher = bookInfo.Publisher,
-                                PublicationYear = bookInfo.PublicationYear,
-                                Description = bookInfo.Description,
-                                BookImage = bookInfo.BookImage,
-                                Author = author, // Yazar
-                                Category = category // Kategori
-                            };
-
-                            context.Books.Add(book);
-                        }
-
-                        await context.SaveChangesAsync();
-                        TempData["Success"] = "Kitaplar başarıyla kaydedildi!";
-                    }
-                    else
-                    {
-                        TempData["Error"] = "Kitap bulunamadı!";
-                    }
-                }
-                else
-                {
-                    TempData["Error"] = "API ile bağlantı kurulamadı!";
-                }
-
-                return RedirectToAction("Index");
-            }
-        }
-
-        public async Task<IActionResult> GetBookByISBN(string isbn) 
+        public async Task<IActionResult> GetBookByISBN(string isbn)
         {
             string apiUrl = $"https://openlibrary.org/api/books?bibkeys=ISBN:{isbn}&format=json&jscmd=data";
 
-            
-            using (var client=new HttpClient())
+
+            using (var client = new HttpClient())
             {
                 var response = await client.GetAsync(apiUrl);
                 if (response.IsSuccessStatusCode)
@@ -96,7 +31,7 @@ namespace KutuphaneOtomasyon.Controllers
                     var json = await response.Content.ReadAsStringAsync();
                     var book = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(json);
 
-                    if (book.Count==0)
+                    if (book.Count == 0)
                     {
                         TempData["Error"] = "Bu ısbn ile kitap bulunamadı";
                         return RedirectToAction("Index");
@@ -104,15 +39,15 @@ namespace KutuphaneOtomasyon.Controllers
 
                     var bookInfo = book[$"ISBN:{isbn}"];
 
-                    string AuthorFullName=bookInfo.authors[0].name;
+                    string AuthorFullName = bookInfo.authors[0].name;
                     var author = context.Authors.FirstOrDefault(x => x.AuthorName == AuthorFullName);
-                    if (author == null) 
+                    if (author == null)
                     {
                         Author author1 = new Author
                         {
                             AuthorName = AuthorFullName
                         };
-                        context.Authors.Add(author1 );
+                        context.Authors.Add(author1);
                         context.SaveChanges();
                         author = author1;
                     }
@@ -120,7 +55,7 @@ namespace KutuphaneOtomasyon.Controllers
                     string year = bookInfo.publish_date;
 
                     string title = bookInfo.title;  // Kitap adı
-                     string description = bookInfo.description ?? "Açıklama bulunamadı.";  // Açıklama (varsa)
+                    string description = bookInfo.description ?? "Açıklama bulunamadı.";  // Açıklama (varsa)
                     string bookImage = bookInfo.cover?.large ?? "/images/default-cover.jpg";  // Kapak resmi
 
                     Book newbook = new Book
@@ -151,7 +86,7 @@ namespace KutuphaneOtomasyon.Controllers
 
                 }
             }
-            
+
 
         }
 
@@ -160,24 +95,24 @@ namespace KutuphaneOtomasyon.Controllers
             return View();
         }
 
-        [HttpGet]   
+        [HttpGet]
         public IActionResult BookDetail(int id)//Kitap bilgisi künyesi 
         {
 
-            var book = context.Books.Include(x => x.Author).Include(c=>c.Category).Where(book => book.BookId == id).FirstOrDefault();
-          
+            var book = context.Books.Include(x => x.Author).Include(c => c.Category).Where(book => book.BookId == id).FirstOrDefault();
+
             return View(book);
         }
         public IActionResult SearchBook(string key) //Kitap arama sistemi
-        
+
         {
-            var searchbook = context.Books.Include(author=>author.Author).Include(category=>category.Category).Where(book => book.BookName.Contains(key)|| book.Author.AuthorName.Contains(key)).ToList();
+            var searchbook = context.Books.Include(author => author.Author).Include(category => category.Category).Where(book => book.BookName.Contains(key) || book.Author.AuthorName.Contains(key)).ToList();
             ViewBag.searchbook = searchbook;
-            if (searchbook.Count==0)
+            if (searchbook.Count == 0)
             {
 
                 TempData["Message"] = "Aranan kitap veya yazar bulunamadı.";
-                return RedirectToAction("Index","Home");   
+                return RedirectToAction("Index", "Home");
             }
             return View(searchbook);
         }
@@ -186,7 +121,7 @@ namespace KutuphaneOtomasyon.Controllers
         [HttpPost]
         public IActionResult Borrow(int bookId) //Kitap Ödünç Alma sistemi
         {
-             
+
 
             var userclaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (userclaim == null)
@@ -198,22 +133,22 @@ namespace KutuphaneOtomasyon.Controllers
 
             var bookstock = context.Books.FirstOrDefault(book => book.BookId == bookId);
 
-            if (bookstock == null || bookstock.Quantity <= 0) 
+            if (bookstock == null || bookstock.Quantity <= 0)
             {
                 TempData["KitapYok"] = "Aranan Kitabın Stoğu kalmamış veya aranan kitap yok";
                 return RedirectToAction("Mybook", "Profile");
 
             }
 
-            if (booktotal>=3)
+            if (booktotal >= 3)
             {
                 TempData["ErrorBookTotal"] = "En Fazla 3 Adet Ödünç Kitap Alabilirsiniz";
                 return RedirectToAction("Mybook", "Profile");
             }
 
 
-           
-            
+
+
             var book = context.Books.FirstOrDefault(b => b.BookId == bookId);
             if (book == null) return NotFound("Kitap bulunamadı.");
 
@@ -227,8 +162,8 @@ namespace KutuphaneOtomasyon.Controllers
                 UserId = userıd,
                 LoanDate = DateTime.Now,
                 Status = BookLoan.LoanStatus.Approved,
-                
-               
+
+
             };
 
             try
@@ -245,14 +180,14 @@ namespace KutuphaneOtomasyon.Controllers
                 return StatusCode(500, "Veritabanına veri kaydedilirken bir hata oluştu.");
             }
 
-            return RedirectToAction("Index", "User");    
+            return RedirectToAction("Index", "User");
         }
         public IActionResult ReturnBook(int loanıd) // Kitap İade İşlemi
         {
-            var bookloan=context.BookLoans.Include(x=>x.Book).FirstOrDefault(x => x.Id == loanıd);
-            if (bookloan!=null)
+            var bookloan = context.BookLoans.Include(x => x.Book).FirstOrDefault(x => x.Id == loanıd);
+            if (bookloan != null)
             {
-                bookloan.Status=BookLoan.LoanStatus.Returned;
+                bookloan.Status = BookLoan.LoanStatus.Returned;
                 bookloan.ReturnDate = DateTime.Now;
                 bookloan.Book.Quantity = +1; //İade edilen kitabın stok miktari güncellendi
 
@@ -265,8 +200,8 @@ namespace KutuphaneOtomasyon.Controllers
                 {
                     TempData["ErrorReturnDate"] = "Kitap İade Edilemedi";
                 }
-                    
-               
+
+
 
 
             }
@@ -277,10 +212,39 @@ namespace KutuphaneOtomasyon.Controllers
             return RedirectToAction("MyBook", "Profile");
         }
 
-          
+        //Sistem kitabı gecikterenleri bulup ceza yapan algoritma yapacağım
+        public IActionResult AddLateFees()
+        {
+            var userıd = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var deger = context.BookLoans.Where(x => x.UserId == userıd && x.ReturnDate == null && DateTime.Now > x.DeliveryDate).ToList();
+
+
+            int ceza = 0;
+
+            foreach (var item in deger)
+            {
+                int gecikensüre = (DateTime.Now - item.DeliveryDate).Days;
+                int cezamiktarı = 10 * gecikensüre;
+                ceza = ceza + cezamiktarı;
+
+                item.Status = BookLoan.LoanStatus.Overdue;
+            }
+
+            var user = context.Users.FirstOrDefault(x => x.Id == userıd);
+            if (user != null && ceza > 0)
+            {
+                user.Balance += ceza;
+            }
+
+            context.SaveChanges();
+
+
+            return RedirectToAction("Profile", "User");
+
+
+        }
     }
-
-
 }
  
     

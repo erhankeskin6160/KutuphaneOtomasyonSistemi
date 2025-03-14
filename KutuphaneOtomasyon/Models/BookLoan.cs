@@ -30,13 +30,7 @@ namespace KutuphaneOtomasyon.Models
             get { return _returnDate; }
             set
             {
-                _returnDate = value;
-                if (_returnDate.HasValue && _returnDate.Value > DeliveryDate)
-                {
-                    int overdueDays = (int)(_returnDate.Value - DeliveryDate).TotalDays;
-
-                    PenaltyFee(overdueDays);
-                }
+                 
             }
         }
         //Teslim Edilen Tarihi
@@ -47,12 +41,7 @@ namespace KutuphaneOtomasyon.Models
         public Book Book { get; set; }
 
 
-        public void PenaltyFee(int overdueDays) 
-        {
-            var Total= overdueDays * 10;
-            User.Balance += Total;
-            
-        }
+        
     }
-    //Ödünç Alma Sistemi
+ 
 }

@@ -24,12 +24,15 @@
 
 🔢 Her kullanıcı en fazla 3 kitap alabilecek.
 🛑 3 kitap dolduğunda yeni kitap alamaması için kontrol ekleyeceğiz.
-Bu da tamam! 💪📚🚦
+Bu da tamam! 💪📚🚦,
+
+✔️ E-posta ile şifre sıfırlama sistemi tamamlandı! ✉️🔑
+✔️ Kullanıcıların şifrelerini sıfırlayabilmesi için e-posta üzerinden doğrulama bağlantısı gönderiliyor.
 ---
 
 ### 🌟 **Neler Yapacağız? (Kütüphane Otomasyonu)**  
 1. 🛠️ **Ceza Sistemini Geliştirme:**  
-   - 💸 Ceza hesaplamasını modelde mi yoksa controller’da mı yapacağımıza karar vereceğiz.  
+   
    - 🗓️ Ceza geçmişi ve kullanıcı bakiyesi takibi ekleyeceğiz.  
 
 2. 🛒 **Kitap Alma İşlemleri:**  

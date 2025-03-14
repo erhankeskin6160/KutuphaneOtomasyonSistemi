@@ -1,4 +1,4 @@
-﻿using KutuphaneOtomasyon.Models.Models;
+﻿using KutuphaneOtomasyon.Models;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -28,5 +28,7 @@ namespace KutuphaneOtomasyon.Models
         public DbSet<Notifications> Notifications { get; set; }
 
         public DbSet<Message> Messages { get; set; }    
+
+        public DbSet<CartItem> CartItems { get; set; }
     }
 }
