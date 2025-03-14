@@ -298,14 +298,25 @@ namespace KutuphaneOtomasyon.Controllers
              
             Dictionary<string, string> dictonory = new Dictionary<string, string>()
             {
-                {"Bilişim","Q"},
-                { "Teknoloji", "T" },
-                 { "Roman", "R" },
-                { "Tarih", "H" },
-                 { "Bilim", "B" },
-                { "Sanat", "S" },
-                { "Felsefe", "F" },
-                { "Edebiyat", "E" }
+                { "Genel Konular", "A" },
+                { "Felsefe", "B" },
+        { "Psikoloji", "BF" },
+        { "Din", "BL" },
+        { "Tarih", "H" },  
+        { "Amerikan Tarihi", "E" },
+        { "Sosyal Bilimler", "H" },
+        { "Hukuk", "K" },
+        { "Eğitim", "L" },
+        { "Müzik", "M" },
+        { "Güzel Sanatlar", "N" },
+        { "Dilbilim", "P" },
+        { "Bilim", "Q" },
+        { "Tıp", "R" },
+        { "Tarım", "S" },
+        { "Teknoloji", "T" },  
+        { "Askeri Bilimler", "U" },
+        { "Denizcilik", "V" },
+        { "Kütüphane Bilimi", "Z" }
             };
 
             string kategorikodu = dictonory.ContainsKey(kategori) ? dictonory[kategori]:"X";
