@@ -22,6 +22,7 @@ namespace KutuphaneOtomasyon.Models
 
        public string? ShelfNumber { get; set; }  //Raf Numarası  raf numarası kategory ve demirbaşa ismine göre alacak
 
+       
        public int? Quantity { get; set; } // Adet
         public int PublicationYear { get; set; }//Yayın Yılı
 

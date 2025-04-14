@@ -1,9 +1,12 @@
 ﻿using KutuphaneOtomasyon.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace KutuphaneOtomasyon.Controllers
 {
+    [Authorize(AuthenticationSchemes = "UserCookies", Policy = "User")]
+
     public class MessageController : Controller
     {
         AppDbContext _dbContext;

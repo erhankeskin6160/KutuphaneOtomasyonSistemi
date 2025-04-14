@@ -1,12 +1,15 @@
 ﻿using KutuphaneOtomasyon.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using NETCore.MailKit.Core;
 using NETCore.MailKit.Infrastructure.Internal;
+using System.Collections.Generic;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -15,6 +18,7 @@ using System.Threading.Tasks;
 namespace KutuphaneOtomasyon.Controllers
 {
 
+   
 
     public class LoginController : Controller
     {
@@ -28,43 +32,52 @@ namespace KutuphaneOtomasyon.Controllers
             this.emailService = emailService;
             
         }
-
+        [AllowAnonymous]
         public IActionResult Login()
         {
 
             return View();
         }
+        [AllowAnonymous]
         [HttpGet]
-        public IActionResult Index()
-        {
+            public IActionResult Index()
+            {
 
-            return View();
-        }
+                return View();
+            }
+        [AllowAnonymous]
 
         [HttpPost]
-        public IActionResult Index(User user)
-        {
-            var info = _contex.Users.FirstOrDefault(x => x.Email == user.Email && x.Password == user.Password);
-            if (info != null)
+            public IActionResult Index(User user)
             {
-                var claim = new List<Claim>
+                var info = _contex.Users.FirstOrDefault(x => x.Email == user.Email && x.Password == user.Password);
+                if (info != null)
                 {
-                    new Claim(ClaimTypes.Name, info.Email),
-                    new Claim(ClaimTypes.Role, info.Role),
-                    new Claim(ClaimTypes.NameIdentifier,info.Id.ToString())
-                };
-                var identity = new ClaimsIdentity(claim, "Login");
-                var principal = new ClaimsPrincipal(identity);
+                    var claim = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, info.Email),
+                        new Claim(ClaimTypes.Role, "User"),
+                        new Claim(ClaimTypes.NameIdentifier,info.Id.ToString())
+                    };
+                    var identity = new ClaimsIdentity(claim, "UserCookies");
+                    var principal = new ClaimsPrincipal(identity);
 
-                HttpContext.SignInAsync("Cookies", principal);
-                return RedirectToAction("Index", "User");
-            }
-            else
-            {
-                return View();
-
+                    HttpContext.SignInAsync("UserCookies", principal);
+                    return RedirectToAction("Index", "User");
+                }
+                else
+                {
+                    return View();
             }
         }
+
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Index", "User");
+        }
+
 
 
         [HttpPost]
@@ -99,12 +112,13 @@ namespace KutuphaneOtomasyon.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword(string Email)
         {
             if (string.IsNullOrEmpty(Email)||isValidEmail(Email)==false)
             {
 
-                ViewBag.Message = "Lütfen E_posta Adersinizi Giriniz";
+                ViewBag.Message = "Lütfen E_posta Adresinizi Giriniz";
                 return View();  
 
             }
@@ -128,12 +142,14 @@ namespace KutuphaneOtomasyon.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult ResetPassword(string Email)
         {
             if (string.IsNullOrEmpty(Email)) 
             {
 
-                return NotFound("Geçersiz İşlem"); }
+                return NotFound("Geçersiz İşlem"); 
+            }
             ViewBag.Email = Email;
 
 
@@ -143,6 +159,7 @@ namespace KutuphaneOtomasyon.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult ResetPassword(string Email, string Password)
         {
             var user = _contex.Users.FirstOrDefault(x => x.Email == Email);
@@ -166,10 +183,10 @@ namespace KutuphaneOtomasyon.Controllers
                 var mail = new MailAddress(email);
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return false;
-                throw;
+                throw ;
             }
 
         }

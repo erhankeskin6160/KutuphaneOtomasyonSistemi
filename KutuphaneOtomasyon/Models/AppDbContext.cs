@@ -11,6 +11,11 @@ namespace KutuphaneOtomasyon.Models
 
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Book>().ToTable("Books",b=>b.HasCheckConstraint("QuantityCheck", "Quantity>=0"));//Bu kodu veritabanında adet sayısı -1 düşmesin diye yapıldı
+        }
+
 
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Book> Books { get; set; }

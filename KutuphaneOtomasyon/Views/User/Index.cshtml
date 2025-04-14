@@ -1,9 +1,11 @@
-﻿
+﻿  
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
 @Html.Partial("Chart.cshtml")
+<hr />
 
- 
+
+@await Html.PartialAsync("UserReadBooks", (List<KutuphaneOtomasyon.Models.BookLoan>)ViewData["UserBooks"])

@@ -1,6 +1,10 @@
 ﻿@using System.Security.Claims
 @using Microsoft.EntityFrameworkCore
 @model List<Book>
+
+@{
+    Layout = "_Layout";
+}
 <!DOCTYPE html>
 
 <html lang="tr">
@@ -14,18 +18,18 @@
 
     <script>
         function updateCartCount() {
-            fetch('/Cart/GetCartCount')
-                .then(response => response.json())
-                .then(count => {
-                    const cartCountElement = document.getElementById('cart-count');
-                    if (count > 0) {
-                        cartCountElement.textContent = count;
-                        cartCountElement.style.display = 'inline'; // Sayıyı göster
-                    } else {
-                        cartCountElement.style.display = 'none'; // Sayı yoksa gizle
-                    }
-                })
-                .catch(error => console.log('Hata:', error));
+        fetch('/Cart/GetCartCount')
+        .then(response => response.json())
+        .then(count => {
+        const cartCountElement = document.getElementById('cart-count');
+        if (count > 0) {
+        cartCountElement.textContent = count;
+        cartCountElement.style.display = 'inline'; // Sayıyı göster
+        } else {
+        cartCountElement.style.display = 'none'; // Sayı yoksa gizle
+        }
+        })
+        .catch(error => console.log('Hata:', error));
         }
 
         document.addEventListener('DOMContentLoaded', updateCartCount); // Sayfa yüklendiğinde sepet sayısını günceller.
@@ -57,51 +61,10 @@
 
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <div class="cart-icon-container">
-                <a href="@Url.Action("ViewCart", "Cart")" id="cart-icon">
-                    <i class="fa fa-shopping-cart"></i> <!-- Sepet simgesi (Font Awesome kullanabilirsiniz) -->
-                    <span id="cart-count" style="display:none; color: red;"></span> <!-- Sepetteki kitap sayısı -->
-                </a>
-            </div>
-
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="relative">
-                    <a href="/Cart/ViewCart" class="text-gray-800 hover:text-blue-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1 5m4-5v6m4-6v6M5 21h14" />
-                        </svg>
-                    </a>
-                    <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1.5">
-                        @ViewBag.CartCount
-                    </span>
-                </div>
-
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Ana Sayfa</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Kitaplar</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Login/Index">Üye Paneli</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Admin Paneli</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        
-
-    </nav>
+     
 
     <!-- Hero Section -->
-    <div class="heros">
+    <div class="heros mt-1">
         <h1>Hoş Geldiniz, Kitap Dünyasına!</h1>
         <p>Binlerce kitap keşfetmeye hazır mısınız? Aradığınız tüm kitaplar burada.</p>
         <form class="d-flex justify-content-center mt-3" asp-controller="Book" asp-action="SearchBook">
@@ -144,26 +107,37 @@
         <div class="row">
             @foreach (var kitap in rastgelekitap)
             {
-                
-            
-            <div class="col-md-3">
-                <div class="card">
-                    <img src="/Resimler/Kitaplar/@kitap.BookImage" class="card-img-top" alt="Kitap">
-                    <div class="card-body">
-                        <h5 class="card-title">@kitap.BookName</h5>
-                        <p class="card-text">@kitap.Author.AuthorName</p>
 
-@*                             <span class="btn btn-danger  col-4" href="/Book/BookDetail/@kitap.AuthorId">Detay</span>
- *@                           <a href="/Book/BookDetail/@kitap.BookId" class="btn btn-danger col-4 ">Detay</a>
- 
-                           
+
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="/Resimler/Kitaplar/@kitap.BookImage" class="card-img-top" alt="Kitap">
+                        <div class="card-body">
+                            <h5 class="card-title">@kitap.BookName</h5>
+                            <p class="card-text">@kitap.Author.AuthorName</p>
+
+                            @*                             <span class="btn btn-danger  col-4" href="/Book/BookDetail/@kitap.AuthorId">Detay</span>
+ *@                            
+
                             <form method="post" asp-action="Borrow" asp-controller="Book">
                                 @foreach (var item in Model)
                                 {
-                                <input type="hidden" name="BookId" value="@item.BookId" />
+                                    <input type="hidden" name="BookId" value="@item.BookId" />
                                 }
 
                                 <button type="submit" class="btn btn-outline-info col-4">Ödünç Al</button>
+                            </form>
+
+                            <form asp-action="AddToCart" asp-controller="Cart" method="post">
+                                @foreach(var item in Model)
+                                {
+                                    <input type="hidden" name="BookId" value="@item.BookId" />
+                                }
+                                <button type="submit">Sepete Ekle</button>
+
+                                <span style="display: inline-block; width: 25%; padding: 10px 15px; text-align: center; border-radius: 5px; background-color: #dc3545;">
+  <a href="/Book/BookDetail/@kitap.BookId" style="color: white; text-decoration: none;">Detay</a>
+</span>
                             </form>
 
                              
@@ -179,11 +153,7 @@
     </div>
 
     <!-- Footer -->
-    <div class="footer">
-        <p>&copy; 2024 Kütüphane. Tüm hakları saklıdır.</p>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

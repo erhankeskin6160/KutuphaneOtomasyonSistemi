@@ -10,7 +10,8 @@ using System.Security.Claims;
 
 namespace KutuphaneOtomasyon.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "AdminCookies")]
+
     public class AdminController : Controller
     {
         private int a;
@@ -18,14 +19,14 @@ namespace KutuphaneOtomasyon.Controllers
         private AppDbContext dbContext;
         private IsbnService _ısbnService;
 
-        
+
         public AdminController(AppDbContext appDbContext, IsbnService ısbnService)
         {
-            var db = appDbContext;
-            dbContext = db;
-            _ısbnService = ısbnService;
-            
           
+            dbContext = appDbContext;
+            _ısbnService = ısbnService;
+
+
         }
 
         [HttpGet]
@@ -49,8 +50,9 @@ namespace KutuphaneOtomasyon.Controllers
                 };
 
 
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                var claimsIdentity = new ClaimsIdentity(claims, "AdminCookies");
+                var principal = new ClaimsPrincipal(claimsIdentity);
+                await HttpContext.SignInAsync("AdminCookies", principal);
 
                 return RedirectToAction("Index", "Admin");
             }
@@ -65,17 +67,40 @@ namespace KutuphaneOtomasyon.Controllers
 
 
         }
+        public   async Task<IActionResult> Logout() 
+        {
+            await HttpContext.SignOutAsync("AdminCookies");
+            return RedirectToAction("Login", "Admin");
+        }
 
         public IActionResult Index()//Bu sayfada admin panelinde kütüphanede kaç kitap var kaçı ödünç verildi kaç üye var gibi istatiksel cardlar koyulacak
                                     //Partial Viewler Index.cshtml eklenecek
         {
-            var cat = dbContext.Categories.ToList();
-             
 
-           var catss = dbContext.Categories.First().CategoryName;
+            ViewBag.totalbook = dbContext.Books.Count().ToString();
+            ViewBag.totaluser = dbContext.Users.Count().ToString();
+            ViewBag.totalauthor = dbContext.Authors.Count().ToString();
+            ViewBag.totalbalance = dbContext.Users.Sum(x => x.Balance);
+            ViewBag.totalborrow = dbContext.BookLoans.Count().ToString(); 
+            ViewBag.nottotalborrow = dbContext.BookLoans.Where(x => x.ReturnDate == null).Count();
+            
+            ViewBag.mostborrowedbook=dbContext.BookLoans.GroupBy(x => x.UserId).Select(y=>new //en çok ödünç alan top 5 kullanıcı
+            {
+                UserName = dbContext.Users.Where(u => u.Id == y.Key).Select(u => u.Name).FirstOrDefault(),
+                BorrowedBooks = y.Count()
+            }
+            ).OrderByDescending(u => u.BorrowedBooks).Take(5).ToList();
 
             
-           
+
+
+            var cat = dbContext.Categories.ToList();
+
+
+            var catss = dbContext.Categories.First().CategoryName;
+
+
+
             return View(cat);
         }
 
@@ -126,7 +151,10 @@ namespace KutuphaneOtomasyon.Controllers
             return View(member);
         }
 
-
+        /// <summary>
+        /// Kullanıcıları Listeler
+        /// </summary>
+        /// <returns></returns>
         public IActionResult EditMemberList()
         {
             var memberlist = dbContext.Users.ToList();
@@ -141,6 +169,11 @@ namespace KutuphaneOtomasyon.Controllers
             return View(EditUser);
         }
 
+        /// <summary>
+        /// Kullanıcı Bilgillerini düzenler
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult EditMembers(User user) //Düzenlenen bilgiler post ediliyor
         {
@@ -175,7 +208,7 @@ namespace KutuphaneOtomasyon.Controllers
 
         public IActionResult Books() //Kütüphanedeki kitaplar listeleniyor
         {
-           var books = dbContext.Books.Include(author => author.Author).Include(x => x.Category).ToList();
+            var books = dbContext.Books.Include(author => author.Author).Include(x => x.Category).ToList();
             //Eager Loading yaptık şuan lazzy loading kapalı
             return View(books);
         }
@@ -186,7 +219,7 @@ namespace KutuphaneOtomasyon.Controllers
         public IActionResult EditBook(int id)
         {
 
-           
+
             //var book = dbContext.Books.Include(x=>x.Author).Find(id);
             List<SelectListItem> selectListItems = (from x in dbContext.Categories
                                                     select new SelectListItem
@@ -196,7 +229,7 @@ namespace KutuphaneOtomasyon.Controllers
                                                     }).ToList();
             ViewBag.cat = selectListItems;
             var book = dbContext.Books.Include(a => a.Author).Where(x => x.BookId == id).First();//Eager loading ile veriyi çektik
-            
+
             return View(book);
 
         }
@@ -207,9 +240,9 @@ namespace KutuphaneOtomasyon.Controllers
         public IActionResult EditBook(Book book) // Kitap güncelleniyor
         {
 
-             
 
-            var editbook = dbContext.Books.Include(a => a.Author).Include(cat=>cat.Category).Where(x => x.BookId == book.BookId).First();
+
+            var editbook = dbContext.Books.Include(a => a.Author).Include(cat => cat.Category).Where(x => x.BookId == book.BookId).First();
             var author = book.BookName;
             var isAuthorAvailable = dbContext.Authors.Where(author => author.AuthorName == book.Author.AuthorName).FirstOrDefault();
             string genaterecode = GenarateCategoryCode(editbook.Category.CategoryName);
@@ -249,8 +282,8 @@ namespace KutuphaneOtomasyon.Controllers
                 ımg = editbook.BookImage;
             }
 
-           
-            
+
+
             book.AssetNumber = assetnumber;
             book.BookImage = ımg;
             editbook.BookName = book.BookName;
@@ -262,7 +295,6 @@ namespace KutuphaneOtomasyon.Controllers
             editbook.CategoryId = book.CategoryId;
             editbook.Author.AuthorName = book.Author.AuthorName;
             editbook.BookImage = book.BookImage;
-           
 
 
 
@@ -270,7 +302,8 @@ namespace KutuphaneOtomasyon.Controllers
 
 
 
-            
+
+
 
 
 
@@ -294,15 +327,15 @@ namespace KutuphaneOtomasyon.Controllers
         }
         public string GenarateCategoryCode(string kategori)
         {
-             
-             
+
+
             Dictionary<string, string> dictonory = new Dictionary<string, string>()
             {
-                { "Genel Konular", "A" },
-                { "Felsefe", "B" },
+        { "Genel Konular", "A" },
+        { "Felsefe", "B" },
         { "Psikoloji", "BF" },
         { "Din", "BL" },
-        { "Tarih", "H" },  
+        { "Tarih", "H" },
         { "Amerikan Tarihi", "E" },
         { "Sosyal Bilimler", "H" },
         { "Hukuk", "K" },
@@ -313,13 +346,13 @@ namespace KutuphaneOtomasyon.Controllers
         { "Bilim", "Q" },
         { "Tıp", "R" },
         { "Tarım", "S" },
-        { "Teknoloji", "T" },  
+        { "Teknoloji", "T" },
         { "Askeri Bilimler", "U" },
         { "Denizcilik", "V" },
         { "Kütüphane Bilimi", "Z" }
             };
 
-            string kategorikodu = dictonory.ContainsKey(kategori) ? dictonory[kategori]:"X";
+            string kategorikodu = dictonory.ContainsKey(kategori) ? dictonory[kategori] : "X";
             return kategorikodu;
         }
 
@@ -332,7 +365,7 @@ namespace KutuphaneOtomasyon.Controllers
                                                    {
                                                        Text = x.CategoryName,
                                                        Value = x.CategoryId.ToString(),
-                                                       
+
 
                                                    }).ToList();
             ViewBag.Categories = selects;
@@ -346,14 +379,14 @@ namespace KutuphaneOtomasyon.Controllers
         [HttpPost]
         public IActionResult AddBook(Book book) //kitap eklenen  bilgileri post  ediliyor veri tabanına kaydediyor
         {
-             
-            var catname=dbContext.Categories.Where(x=>x.CategoryId==book.CategoryId).Select(x => x.CategoryName).FirstOrDefault();
+
+            var catname = dbContext.Categories.Where(x => x.CategoryId == book.CategoryId).Select(x => x.CategoryName).FirstOrDefault();
             string genaterecode = GenarateCategoryCode(catname);
-             string assetnumber = GenareteAssetNumber(8);
-            book.ShelfNumber = genaterecode+assetnumber;
+            string assetnumber = GenareteAssetNumber(8);
+            book.ShelfNumber = genaterecode + assetnumber;
             book.AssetNumber = assetnumber;
 
-           
+
             //var addbook = dbContext.Books.Include(author => author.Author).First();
             var isAuthorAvailable = dbContext.Authors.FirstOrDefault(author => author.AuthorName == book.Author.AuthorName);
             if (isAuthorAvailable != null)
@@ -385,7 +418,7 @@ namespace KutuphaneOtomasyon.Controllers
                 {
                     book.ISBN = _ısbnService.GenerateISBN();//Böyle kitap eklenirken ISBN değeri verilmediğinde otomatik olarak ISBN Değerini atayacaktır
                 }
-               
+
                 dbContext.Books.Add(book);
 
 
@@ -405,7 +438,7 @@ namespace KutuphaneOtomasyon.Controllers
         }
 
         [HttpGet]
-        
+
 
 
         public IActionResult DeleteBook(int id)

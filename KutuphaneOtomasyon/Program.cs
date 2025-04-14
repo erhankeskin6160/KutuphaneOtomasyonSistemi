@@ -13,22 +13,34 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+
+builder.Services.AddAuthentication(options => 
+{
+    options.DefaultScheme = "UserCookies";
+}
+)
+    .AddCookie("AdminCookies", options =>
+    {
+        options.LoginPath = "/Admin/Login";       // Admin login sayfasýna yönlendirilecek
+        options.AccessDeniedPath = "/AccessDenied"; // Yetkisiz eriþim sayfasý
+    })
+    .AddCookie("UserCookies", options =>
+    {
+        options.LoginPath = "/Login/Index";       // Kullanýcý login sayfasýna yönlendirilecek
+        options.AccessDeniedPath = "/AccessDenied"; // Yetkisiz eriþim sayfasý
+    });
+
+
+
+
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-    
+
     options.AddPolicy("User", policy => policy.RequireRole("User"));
 });
-
- 
-
-builder.Services.AddAuthentication("Cookies") // Varsayýlan kimlik doðrulama þemasý
-    .AddCookie("Cookies", options =>
-    {
-        options.LoginPath = "/Login";          // Giriþ sayfasý
-        options.AccessDeniedPath = "/AccessDenied"; // Yetkisiz eriþim
-    });
-
 
 
 builder.Services.AddAuthorization();  
@@ -77,7 +89,7 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "Login",
     pattern: "Login",
-    defaults: new { controller = "Login", action = "Login" }
+    defaults: new { controller = "Login", action = "Index" }
 
 
 );

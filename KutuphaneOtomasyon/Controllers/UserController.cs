@@ -6,6 +6,7 @@ using System.Security.Claims;
 
 namespace KutuphaneOtomasyon.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         AppDbContext dbcontext;
@@ -13,7 +14,7 @@ namespace KutuphaneOtomasyon.Controllers
         {
                  this.dbcontext = dbcontext; 
         }
-        [Authorize]
+        [Authorize(AuthenticationSchemes = "UserCookies", Policy = "User")]
         public IActionResult Index()
         {
             var userclaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
@@ -23,16 +24,56 @@ namespace KutuphaneOtomasyon.Controllers
 
             var toplanalınanankitap = dbcontext.BookLoans.Include(x => x.User).Where(x => x.UserId == userıd).Count().ToString();
             ViewBag.toplanalınankitap = toplanalınanankitap;
-            return View(bakiye);
-        }
 
-        public IActionResult Profile(int id) 
+            var userBooks = dbcontext.BookLoans.Include(x => x.Book).ThenInclude(a=>a.Author).Where(x => x.UserId == userıd).ToList();
+            ViewData["UserBooks"] = userBooks;
+            var userbook = dbcontext.BookLoans.Include(x => x.Book).Where(x => x.UserId == userıd).ToList();
+
+
+            return View(bakiye);
+            }
+
+        [HttpGet]
+        public IActionResult Profile() 
         {
-            var profile = dbcontext.Users.Where(x => x.Id == id).ToList();
+            var userclaim=HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            int userıd = int.Parse(userclaim.Value);
+           var profile= dbcontext.Users.Find(userıd);
 
 
             return View(profile);
         }
+        [HttpPost]
+        public IActionResult Profile(User userupdate)
+        {
+            var userclaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            int userıd = int.Parse(userclaim.Value);
+            var profile = dbcontext.Users.Find(userıd);
+
+            profile.Email = userupdate.Email;
+            profile.Birthday = userupdate.Birthday;
+            profile.Phone = userupdate.Phone;
+            profile.Password = userupdate.Password;
+            
+            
+          int result=  dbcontext.SaveChanges();
+            if (result > 0)
+            {
+                TempData["SuccesUpdateProfile"] = "Profil Güncelleme İşlemi Başarıyla Yapıldı";
+            }
+            else
+            {
+                TempData["ErrorProfile"] = "Profile Güncelleme Sırasında Bir Hatayla Karşılandı";
+            }
+
+            return View(profile);
+        }
+        public IActionResult UserReadBooks()
+        {
+             
+            return PartialView( );
+        }
+
         [HttpGet]
         public IActionResult Payment()
         {

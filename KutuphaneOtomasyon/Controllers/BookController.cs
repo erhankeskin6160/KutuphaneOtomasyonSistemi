@@ -103,6 +103,11 @@ namespace KutuphaneOtomasyon.Controllers
 
             return View(book);
         }
+        /// <summary>
+        /// Kitap ARrama Sistemi
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public IActionResult SearchBook(string key) //Kitap arama sistemi
 
         {
@@ -175,7 +180,7 @@ namespace KutuphaneOtomasyon.Controllers
             }
             catch (Exception ex)
             {
-                // Hata mesajını logla
+           
                 Console.WriteLine(ex.Message);
                 return StatusCode(500, "Veritabanına veri kaydedilirken bir hata oluştu.");
             }

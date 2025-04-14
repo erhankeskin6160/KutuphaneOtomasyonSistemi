@@ -1,0 +1,128 @@
+﻿@using Microsoft.AspNetCore.Http
+@model BookViewModel
+@{
+    Layout = "_Layout";
+}
+
+
+<style>
+    .pagination a.active {
+        background-color: black;
+        color: white;
+        font-weight: bold;
+
+    }
+
+    .btn i {
+        font-size: 16px; /* İkonu küçültmek için font-size kullanabilirsiniz */
+        margin-left: 8px; /* İkon ile metin arasına boşluk eklemek için margin-left kullanabilirsiniz */
+    }
+
+</style>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<form method="get" class="mb-4">
+    <div class="row">
+        <!-- Kategoriler Butonlarla -->
+        <div class="col-md-12 mb-3">
+            <h5>Kategoriler:</h5>
+            <div class="btn-group" role="group" aria-label="Kategori Seçimi">
+                <button type="submit" name="categoryId" value="" class="btn btn-outline-primary @(Model.CategoryId == null ? "active" : "")">Tüm Kategoriler</button>
+                @foreach (var category in Model.Categories)
+                {
+                    <button type="submit" name="categoryId" value="@category.CategoryId" class="btn btn-outline-primary @(category.CategoryId == Model.CategoryId ? "active" : "")">
+                        @category.CategoryName
+                    </button>
+                }
+            </div>
+        </div>
+
+        <!-- Sıralama Seçimi -->
+        <div class="col-md-6">
+            <label for="shortdate" class="form-label">Sırala:</label>
+            <select name="shortdate" id="shortdate" class="form-select" onchange="this.form.submit()">
+                <option value="yeni" class=@(Model.Shortdate == "yeni" ? "selected" : "")>Yeni Eklenenler</option>
+                <option value="eski" class=@(Model.Shortdate == "eski" ? "selected" : "")>Eski Eklenenler</option>
+            </select>
+        </div>
+    </div>
+</form>
+
+<!-- Kitap Listesi -->
+<div class="row">
+    @foreach (var book in Model.Books)
+    {
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <img src="/Resimler/Kitaplar/@book.BookImage" class="card-img-top" alt="@book.BookName">
+                <div class="card-body">
+                    <h5 class="card-title">@book.BookName</h5>
+                    <p class="card-text"><strong>Yazar:</strong> @book.Author.AuthorName</p>
+                    <p class="card-text"><strong>Kategori:</strong> @book.Category.CategoryName</p>
+
+                    <div class="btn-group" role="group">
+                        <!-- Detayları Gör Butonu -->
+                        <a href="/Book/BookDetail/@book.BookId" class="btn btn-outline-primary d-flex align-items-center justify-content-center">
+                            <i class="fa-solid fa-info-circle me-2"></i> 
+                            Detayları Gör
+                        </a>
+
+                         
+                        <!-- Sepete Ekle Butonu -->
+
+                        <form action="@Url.Action("Borrow", "Book")" method="post" class="d-inline">
+                            <input type="hidden" name="bookId" value="@book.BookId" />
+                             
+                            <button type="submit" class="btn btn-outline-success d-flex align-items-center justify-content-center">
+                                <i class="fa-solid fa-basket-shopping me-2"></i>
+                                Ödünç Al
+                            </button>
+                        </form>
+
+                        <form action="@Url.Action("AddToCart", "Cart")" method="post" class="d-inline">
+                            <input type="hidden" name="bookId" value="@book.BookId" />
+
+                            <button type="submit" class="btn btn-outline-warning d-flex align-items-center justify-content-center">
+                                <i class="fa-solid fa-basket-shopping me-2"></i>
+                                Ödünç Al
+                            </button>
+                        </form>
+
+                        
+                            
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+
+<div class="pagination">
+    <!-- Önceki Sayfa Linki -->
+    @if (Model.CurrentPage > 1)
+    {
+        <a href="@Url.Action("Book", "Home", new { page = Model.CurrentPage - 1, categoryId = Model.CategoryId, shortdate = Model.Shortdate })" class="btn btn-outline-primary">Önceki</a>
+    }
+
+    <!-- Sayfa Numaraları -->
+    @for (int i = 1; i <= Model.TotalPages; i++)
+    {
+        <a href="@Url.Action("Book", "Home", new { page = i, categoryId = Model.CategoryId, shortdate = Model.Shortdate })"
+           class="btn btn-outline-primary @(i == Model.CurrentPage ? "active" : "")">
+            @i
+        </a>
+    }
+
+    <!-- Sonraki Sayfa Linki -->
+    @if (Model.CurrentPage < Model.TotalPages)
+    {
+        <a href="@Url.Action("Book", "Home", new { page = Model.CurrentPage + 1, categoryId = Model.CategoryId, shortdate = Model.Shortdate })" class="btn btn-outline-primary">Sonraki</a>
+    }
+</div>
+

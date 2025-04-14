@@ -4,6 +4,7 @@
     <tr>
         <th>Kitap Adı</th>
         <th>Yazar</th>
+        <th>Adet</th>
         <th>İşlem</th>
     </tr>
     @foreach (var item in Model)
@@ -11,6 +12,8 @@
         <tr>
             <td>@item.Book.BookName</td>
             <td>@item.Book.Author.AuthorName</td>
+             <td>@item.Quantity</td> 
+
             <td>
 
 

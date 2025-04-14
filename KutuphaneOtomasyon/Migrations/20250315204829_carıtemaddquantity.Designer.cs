@@ -4,6 +4,7 @@ using KutuphaneOtomasyon.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KutuphaneOtomasyon.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250315204829_carıtemaddquantity")]
+    partial class carıtemaddquantity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,10 +116,7 @@ namespace KutuphaneOtomasyon.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Books", null, t =>
-                        {
-                            t.HasCheckConstraint("QuantityCheck", "Quantity>=0");
-                        });
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("KutuphaneOtomasyon.Models.BookLoan", b =>

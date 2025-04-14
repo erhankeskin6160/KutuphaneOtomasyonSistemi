@@ -1,6 +1,7 @@
 ﻿using KutuphaneOtomasyon.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,8 +11,12 @@ using System.Text.RegularExpressions;
 
 namespace KutuphaneOtomasyon.Controllers
 {
+     
+    [Authorize(AuthenticationSchemes = "UserCookies", Policy = "User")]
+
     public class ProfileController : Controller
     {
+        
         AppDbContext context;
         public ProfileController(AppDbContext context)
         {

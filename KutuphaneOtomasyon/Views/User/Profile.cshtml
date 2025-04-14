@@ -1,4 +1,9 @@
-﻿@model User;
+﻿
+@model User;
+
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,56 +96,84 @@
             }
     </style>
     
+
 </head>
 
+
+@if (TempData["SuccesUpdateProfile"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccesUpdateProfile"]</div>
+}
+@if (TempData["ErrorProfile"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorProfile"]</div>
+}
 <body>
     <div class="container">
         <div class="profile-header">
-            <img src="https://via.placeholder.com/100" alt="Profil Fotoğrafı">
+            <img src="/User/@Model.UserImg" alt="Profil Fotoğrafı">
+            <h2>@Model.Name @Model.Surname</h2><br />
+            <h3 style="margin-top:1px;">@Model.Role</h3>
             <div class="info">
-                <h2>ERHAN KESKİN</h2>
-                <p>Üye Kodu: 02020212017</p>
-                <p>Grubu: Öğrenci</p>
-                <p>Ödünç Gün Sınırı: 15</p>
+                
+                 
+              
             </div>
         </div>
 
-        <form method="get" action="profile">
-            <input type="hidden" asp-for="Id" value="" />
+        <form method="post" asp-controller="User" asp-action="Profile">
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label for="email">E-Posta</label>
-                <input type= asp-for="Email" value="" />
+                <input type="email"asp-for ="Email"/>
             </div>
 
             <div class="form-group">
-                <label for="dob">Doğum Tarihi</label>
-@*                 <input type="date" asp-for="">
- *@            </div>
+                <label asp-for="Birthday">Doğum Tarihi</label>
+                <input type="date" asp-for="Birthday" asp-format="{0:yyyy-MM-dd}" />
+        </div>
 
             <div class="form-group">
-                <label for="phone">Telefon</label>
-                <input type="tel" id="phone" value="5342600561">
+                <label asp-for="Phone">Telefon</label>
+                <input type="tel" asp-for="Phone" />
             </div>
 
             <div class="form-group">
-                <label for="password">Şifre</label>
-                <input type="password" id="password" placeholder="Şifrenizi girin">
+                <label asp-for="Balance">Borç Durumu</label>
+                <input type="text" asp-for="Balance" readonly />
+            </div>
+
+            <div class="form-group" style="position: relative;">
+                <label asp-for="Password">Şifre</label>
+                <input type="password" asp-for="Password" placeholder="Şifrenizi girin" id="passwordInput"  value="@Model.Password"/>
+                <span onclick="togglePassword()"
+                      style="position: absolute; right: 10px; top: 38px; cursor: pointer; color: #888;">
+                    👁
+                </span>
                 <p class="small">Şifreniz en az bir büyük ve küçük harf, rakam ve özel karakter içermelidir.</p>
             </div>
 
-            <div class="form-group">
-                <label for="confirm-password">Şifre Kontrol</label>
-                <input type="password" id="confirm-password" placeholder="Şifrenizi tekrar girin">
-            </div>
+           
 
-            <div class="form-group">
-                <label for="interests">İlgi Alanlarım</label>
-                <input type="text" id="interests" placeholder="İlgi alanlarınızı girin">
-                <p class="info-text">Kütüphaneye yeni gelen yayınlarla ilgili bildirim almak için ilgi alanlarınızı girin.</p>
-            </div>
+             
 
             <button type="submit" class="submit-btn">Güncelle</button>
         </form>
     </div>
 </body>
+
+<script>
+    function togglePassword() {
+        const passwordInput = document.getElementById("passwordInput");
+        const icon = document.querySelector(".toggle-password");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            icon.textContent = "🙈";
+        } else {
+            passwordInput.type = "password";
+            icon.textContent = "👁️";
+        }
+    }
+</script>
 </html>

@@ -28,6 +28,8 @@ Bu da tamam! 💪📚🚦,
 
 ✔️ E-posta ile şifre sıfırlama sistemi tamamlandı! ✉️🔑
 ✔️ Kullanıcıların şifrelerini sıfırlayabilmesi için e-posta üzerinden doğrulama bağlantısı gönderiliyor.
+
+ - 🔄 Stok kontrolü ve aynı anda birden fazla kitap alma.  
 ---
 
 ### 🌟 **Neler Yapacağız? (Kütüphane Otomasyonu)**  
@@ -37,7 +39,7 @@ Bu da tamam! 💪📚🚦,
 
 2. 🛒 **Kitap Alma İşlemleri:**  
    - 📚 Kullanıcının `userId` ile ISBN ve raf numarasını kontrol ederek kitap alma işlemini daha güvenli yapacağız.  
-   - 🔄 Stok kontrolü ve aynı anda birden fazla kitap alma.  
+  
 
 3. 📊 **İstatistik ve Raporlama:**  
    - 📈 Hangi kitaplar daha çok okunuyor, en çok geciken kitaplar gibi analizler.  
