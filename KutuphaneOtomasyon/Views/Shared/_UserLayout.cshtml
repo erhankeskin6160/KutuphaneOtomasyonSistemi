@@ -1,5 +1,11 @@
-﻿ 
+﻿
+@{
 
+    var gelenmesajsayısı = Context.Session.GetString("IncomingMessage")??"0";
+    var gönderilenmesajsayısı = Context.Session.GetString("SentMessageCount")??"0";
+    
+    
+}
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -54,8 +60,14 @@
             <div class="list-group list-group-flush">
                 <a href="/User/Index/" class="list-group-item list-group-item-action bg-light">Ana Sayfa</a>
                 <a href="/User/Profile/" class="list-group-item list-group-item-action bg-light">Profilim</a>
-                <a href="/Message/Index/" class="list-group-item list-group-item-action bg-light">Gelen Mesajlar</a>
-                <a href="/Message/SentMessage/" class="list-group-item list-group-item-action bg-light">Giden Mesajlar</a>
+                <a href="/Message/Index/" class="list-group-item list-group-item-action bg-light">
+                    <i class="fas fa-inbox"></i>
+                    <span class="badge bg-primary float-right">@gelenmesajsayısı.ToString()</span>
+                    Gelen Mesajlar</a>
+                <a href="/Message/SentMessage/" class="list-group-item list-group-item-action bg-light">
+                    <i class="fas fa-inbox"></i> 
+                    <span class="badge bg-primary float-right">@gönderilenmesajsayısı.ToString()</span>
+                   Gönderilen Mesajlar</a>
                 <a href="/Message/NewMessage/" class="list-group-item list-group-item-action bg-light">Yeni Mesaj</a>
                 <a href="/Profile/Notifications/" class="list-group-item list-group-item-action bg-light">Duyurular</a>
                 <a href="/Profile/MyBook/" class="list-group-item list-group-item-action bg-light">Kitaplarım</a>

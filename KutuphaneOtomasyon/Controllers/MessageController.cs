@@ -10,16 +10,30 @@ namespace KutuphaneOtomasyon.Controllers
     public class MessageController : Controller
     {
         AppDbContext _dbContext;
+
         public MessageController(AppDbContext dbContext)
         {
             _dbContext=dbContext;
+ 
+            
         }
+         
         public IActionResult Index()
         {
             var user=User.FindFirst(ClaimTypes.NameIdentifier);
             var email = user.Subject.Name;
              
             var messages = _dbContext.Messages.Where(x => x.Receiver == email).ToList();
+            var sentmessage = _dbContext.Messages.Where(x => x.Sender == email).ToList();
+            var ıncomingmessagecount = messages.Count.ToString()??"0";
+            var sentmessagecount = sentmessage.Count.ToString()??"0";
+           
+            HttpContext.Session.SetString("IncomingMessage", ıncomingmessagecount); 
+            HttpContext.Session.SetString("SentMessageCount", sentmessagecount);
+
+
+
+
             return View(messages);
         }
 
@@ -29,6 +43,10 @@ namespace KutuphaneOtomasyon.Controllers
             var email = user.Subject.Name;
         
             var sentmessage = _dbContext.Messages.Where(x => x.Sender == email).ToList();
+            var messages = _dbContext.Messages.Where(x => x.Receiver == email).ToList();
+            
+
+             
             return View(sentmessage);
         }
         [HttpGet]

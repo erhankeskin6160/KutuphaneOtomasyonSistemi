@@ -1,4 +1,6 @@
-﻿using KutuphaneOtomasyon.Models;
+﻿using AutoMapper;
+using KutuphaneOtomasyon.Models;
+using KutuphaneOtomasyon.Models.ViewModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,13 +26,18 @@ namespace KutuphaneOtomasyon.Controllers
     {
         private readonly AppDbContext _contex;
         private readonly IEmailService emailService;
-       
 
-        public LoginController(AppDbContext contex, IEmailService emailService )
+        private AppDbContext dbContext;
+        private readonly IMapper _mapper;
+        private readonly GoogleReCaptchaService _googleReCaptcha;
+
+
+        public LoginController(AppDbContext contex, IEmailService emailService , IMapper mapper, GoogleReCaptchaService googleReCaptcha)
         {
             _contex = contex;
             this.emailService = emailService;
-            
+            _mapper = mapper;
+            _googleReCaptcha = googleReCaptcha;
         }
         [AllowAnonymous]
         public IActionResult Login()
@@ -48,7 +55,18 @@ namespace KutuphaneOtomasyon.Controllers
         [AllowAnonymous]
 
         [HttpPost]
-            public IActionResult Index(User user)
+            public async Task<IActionResult> Index(User user)
+            {
+                var token = Request.Form["g-recaptcha-response"];
+                var isValidCaptcha = await _googleReCaptcha.VerifyToken(token);
+
+            if (isValidCaptcha==false)
+            {
+                ModelState.AddModelError(string.Empty, "Lütfen Recaptha Doğrulamasını tamamla");
+                return View(user);
+
+            }
+            else
             {
                 var info = _contex.Users.FirstOrDefault(x => x.Email == user.Email && x.Password == user.Password);
                 if (info != null)
@@ -67,8 +85,57 @@ namespace KutuphaneOtomasyon.Controllers
                 }
                 else
                 {
+                    ViewData["ErrorLogin"] = "Giriş İşlemi Başarısız";
                     return View();
+                }
             }
+
+           
+        }
+        [HttpGet]
+        public IActionResult Register() 
+        {
+            
+            return View();  
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(UserViewModel userViewModel)
+        {
+            var isValid = await _googleReCaptcha.VerifyToken(userViewModel.RecaptchaToken);
+
+            if (!isValid)
+            {
+                ModelState.AddModelError(string.Empty, "Lütfen reCAPTCHA doğrulamasını tamamlayın.");
+                return View(userViewModel);
+            }
+
+            if (ModelState.IsValid)
+            {
+                var user = _mapper.Map<User>(userViewModel);
+
+                if (Request.Form.Files.Count > 0)
+                {
+                    var filename = Path.GetFileNameWithoutExtension(Request.Form.Files[0].FileName);
+                    var extension = Path.GetExtension(Request.Form.Files[0].FileName);
+                    string path = Path.Combine("wwwroot/User/", filename + extension);
+
+                    using (Stream stream = new FileStream(path, FileMode.Create))
+                    {
+                        await Request.Form.Files[0].CopyToAsync(stream);
+                    }
+
+                    user.UserImg = filename + extension;
+                }
+
+                _contex.Users.Add(user);
+                await _contex.SaveChangesAsync();
+
+                return RedirectToAction("Index");
+            }
+            
+
+            return View(userViewModel);
         }
 
 
@@ -132,7 +199,7 @@ namespace KutuphaneOtomasyon.Controllers
 
             var callbackUrl = $"{Request.Scheme}://{Request.Host}/Login/ResetPassword?Email={Email}";
 
-            await emailService.SendAsync(Email, "Şifre Sıfırlama",
+            await emailService.SendAsync(Email, "Kütüphane Otomasyon Şifre Sıfırlama",
      $"Şifrenizi sıfırlamak için <a href='{callbackUrl}'>buraya tıklayınız</a> Eğer bu isteği siz yapmadıysanız, lütfen bu e-postayı göz ardı ediniz.  <br><br> \r\n    📚 Kütüphanemizi kullandığınız için teşekkür ederiz!<br><br> \r\n    Saygılar,<br> Kütüphane Yönetimi", true);
 
 

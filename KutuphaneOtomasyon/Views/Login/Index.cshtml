@@ -8,6 +8,7 @@
     <title>Daily UI | #001 - Sign Up</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 </head>
 <body class="align">
@@ -34,6 +35,9 @@
                     <input type="password" asp-for="Password" placeholder="••••••••••••">
                 </div>
 
+                <div class="g-recaptcha" data-sitekey="6LcIgBsrAAAAACLVKy4ta1axLXj_mTr78Q6Ykk2Q"></div>
+
+
                 <div class="form__field">
                     <input type="submit" value="Sign Up">
                 </div>
@@ -47,4 +51,11 @@
     </div>
 
 </body>
+
+<script>
+    $('form').submit(function () {
+                 var recaptchaResponse = $('#g-recaptcha-response').val();
+                 $('input[name="RecaptchaToken"]').val(recaptchaResponse);
+             })
+</script>
 </html>

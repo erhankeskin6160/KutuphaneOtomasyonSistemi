@@ -113,14 +113,10 @@
         <div class="profile-header">
             <img src="/User/@Model.UserImg" alt="Profil Fotoğrafı">
             <h2>@Model.Name @Model.Surname</h2><br />
-            <h3 style="margin-top:1px;">@Model.Role</h3>
-            <div class="info">
-                
-                 
-              
-            </div>
-        </div>
+             
 
+        </div>
+        <hr />
         <form method="post" asp-controller="User" asp-action="Profile">
             <input type="hidden" asp-for="Id" />
             <div class="form-group">

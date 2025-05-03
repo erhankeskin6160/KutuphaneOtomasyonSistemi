@@ -1,4 +1,6 @@
+using AutoMapper;
 using KutuphaneOtomasyon;
+using KutuphaneOtomasyon.Mapping;
 using KutuphaneOtomasyon.Models;
 using KutuphaneOtomasyon.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -13,8 +15,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-
+builder.Services.AddSession();
+builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
 
 builder.Services.AddAuthentication(options => 
 {
@@ -50,8 +52,9 @@ builder.Services.AddScoped<Cezaservice>();
 builder.Services.AddScoped<CezaArkaPlanService>();
 builder.Services.AddHostedService<CezaArkaPlanService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<GoogleReCaptchaService>();
 
- 
 
 
 builder.Services.AddSession(options =>
@@ -97,6 +100,14 @@ app.MapControllerRoute(
     name: "Login",
     pattern: "AdminGiris",
     defaults: new { controller = "Admin", action = "Login" }
+
+
+);
+
+app.MapControllerRoute(
+    name: "LoginForgotPassword",
+    pattern: "Login/ÞifremiUnuttum",
+    defaults: new { controller = "Login", action = "ForgotPassword" }
 
 
 );

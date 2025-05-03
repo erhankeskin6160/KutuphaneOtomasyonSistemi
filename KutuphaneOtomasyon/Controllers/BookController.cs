@@ -17,7 +17,11 @@ namespace KutuphaneOtomasyon.Controllers
         }
 
 
-
+        /// <summary>
+        /// Api kullanarak kitabın ISBN numarası girerek kitap bilgilerini apıden alır veri tabanına kitabı ekler
+        /// </summary>
+        /// <param name="isbn"></param>
+        /// <returns></returns>
         public async Task<IActionResult> GetBookByISBN(string isbn)
         {
             string apiUrl = $"https://openlibrary.org/api/books?bibkeys=ISBN:{isbn}&format=json&jscmd=data";
@@ -55,7 +59,7 @@ namespace KutuphaneOtomasyon.Controllers
                     string year = bookInfo.publish_date;
 
                     string title = bookInfo.title;  // Kitap adı
-                    string description = bookInfo.description ?? "Açıklama bulunamadı.";  // Açıklama (varsa)
+                    string description = bookInfo.description ?? "Açıklama bulunamadı.";  // Açıklama (varsa)//Eğer açıklama yoksa null hatası almayalım diye ?? ternary öperatörü kullanıldı
                     string bookImage = bookInfo.cover?.large ?? "/images/default-cover.jpg";  // Kapak resmi
 
                     Book newbook = new Book
@@ -145,7 +149,7 @@ namespace KutuphaneOtomasyon.Controllers
 
             }
 
-            if (booktotal >= 3)
+            if (booktotal >= 3)//Veri tabanından kullanıcının üzerindeki kitapları sayısını getirir 3 fazlaysa kitap almasını engeller
             {
                 TempData["ErrorBookTotal"] = "En Fazla 3 Adet Ödünç Kitap Alabilirsiniz";
                 return RedirectToAction("Mybook", "Profile");
@@ -187,6 +191,11 @@ namespace KutuphaneOtomasyon.Controllers
 
             return RedirectToAction("Index", "User");
         }
+        /// <summary>
+        /// Kullanıcının kitap iaede etmesini sağlar
+        /// </summary>
+        /// <param name="loanıd"></param>
+        /// <returns></returns>
         public IActionResult ReturnBook(int loanıd) // Kitap İade İşlemi
         {
             var bookloan = context.BookLoans.Include(x => x.Book).FirstOrDefault(x => x.Id == loanıd);
@@ -203,7 +212,7 @@ namespace KutuphaneOtomasyon.Controllers
                 }
                 catch (Exception)
                 {
-                    TempData["ErrorReturnDate"] = "Kitap İade Edilemedi";
+                    TempData["ErrorReturnDate"] = "Kitap İade Edilemedi";//developerı görmediği hataları son kullanıcı görmemesi için kullanıcaya özel hata fırlatır
                 }
 
 

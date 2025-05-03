@@ -18,7 +18,10 @@ namespace KutuphaneOtomasyon.Controllers
         {
             return View();
         }
-
+        /// <summary>
+        /// Kullanıcının sepettini gösterir
+        /// </summary>
+        /// <returns></returns>
         public IActionResult ViewCart()
         {
             var user = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -43,7 +46,7 @@ namespace KutuphaneOtomasyon.Controllers
                 return NotFound();
             }
             var userCartItems = _context.CartItems.Where(x => x.UserId == userıd).ToList();
-            var existingCartItem = userCartItems.FirstOrDefault(x => x.BookId == bookid);//Sepete eklenen aynı kitapmı aynı kitapsa adetini artır sepette çift gösterme
+            var existingCartItem = userCartItems.FirstOrDefault(x => x.BookId == bookid);//Sepete eklenen aynı kitapmı aynı kitapsa adetini artır sepette çift göstermez
             var totalQuantityInCart = userCartItems.Sum(x => x.Quantity) + (existingCartItem != null ? 1 : 0);
             ViewBag.totalQuantityInCart = totalQuantityInCart;
             if (totalQuantityInCart >= 3)
@@ -109,17 +112,17 @@ namespace KutuphaneOtomasyon.Controllers
         {
             var user=User.FindFirst(ClaimTypes.NameIdentifier);
             var userId = Convert.ToInt32(user.Value);
-            var mybook = _context.BookLoans.Where(x => x.UserId == userId).ToList();//Kullanıcının üzerindeki kitap sayılarını çektil
+            var userbook = _context.BookLoans.Where(x => x.UserId == userId).ToList();//Kullanıcının üzerindeki kitap  sayılarını veritabanından çektik
             var cartItems = _context.CartItems.Include(x => x.Book).Where(x => x.UserId == userId).ToList();//Sepetteki toplam sayı çekmek için listeyi alıypz
             int totalCartBook = cartItems.Sum(x => x.Quantity);//sepetteki toplam kitap adet bilgisini alıyoruz
-            int totalbook = mybook.Count + totalCartBook;//seppeteki kitap adet sayısı ile kullanıcının üzerindeki  kitap adet sayısının toplamı alıyoruz
+            int totalbook = userbook.Count + totalCartBook;//seppeteki kitap adet sayısı ile kullanıcının üzerindeki  kitap adet sayısının toplamı alıyoruz
 
 
             
 
             if (totalbook>=3)
             {
-                TempData["ErroCart"] = "Sepete aldıklarınız ve üzerinizde  bulunan kitapların toplam adeti 3 geçemez";
+                TempData["ErroCart"] = "Sepete ekledikeriniz  ve üzerinizde  bulunan kitapların toplam adeti 3 geçemez";
                 return RedirectToAction("Index", "Cart");
             }
 
@@ -128,9 +131,9 @@ namespace KutuphaneOtomasyon.Controllers
             foreach (var item in cartItems)
             {
 
-                if (item.Book.Quantity<=0)//Kitap stoğu yoksa alamasın veya kitap stoğu yoksa listede göstermicem kullanıcı kitabı göremeyecek ayarlanacak o
+                if (item.Book.Quantity<=0)//Kitap stoğu yoksa alamasın   
                 {
-                    TempData["ErroCart"] = $"{item.Book.BookName} kitap stoktada yok ödünç alamazsın";
+                    TempData["ErroCart"] = $"{item.Book.BookName} kitap stok'ta yok ödünç alamazsın";
                     continue;
 
                 }

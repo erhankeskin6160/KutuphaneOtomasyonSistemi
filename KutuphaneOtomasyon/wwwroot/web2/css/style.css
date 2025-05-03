@@ -697,13 +697,34 @@ i.dollar {
 	background: url('../images/img-sprite.png') no-repeat -435px -35px;
 	display: inline-block;
 }
+i.fa-solid fa-book {
+	width: 60px;
+	height: 60px;
+	no-repeat -435px -35px;
+	display: inline-block;
+}
+
+#book {
+	width: 60px;
+	height: 60px;
+	no-repeat -435px -35px;
+	display: inline-block;
+}
 .sales {
-	width:23.5%;
-	margin-right:2%;
-	background:#16a085;
-	padding:1.8em 1.5em;
-	float:left;
-	  cursor: pointer;
+	width: 23.5%;
+	margin-right: 2%;
+	background: #16a085;
+	padding: 1.8em 1.5em;
+	float: left;
+	cursor: pointer;
+}
+
+.fa-book {
+	width: 60px;
+	height: 60px;
+	 
+	background-repeat: no-repeat;
+	display: inline-block;
 }
 .orders {
 	width:23.5%;

@@ -26,9 +26,15 @@ namespace KutuphaneOtomasyon.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// Kullanıcı üzerindeki kitapları listeler
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="bookname"></param>
+        /// <returns></returns>
         public IActionResult MyBook(int page=1 , string bookname="") 
         {
-            int pagesize = 4;
+            int pagesize = 4;//Her sayfaya 4 adet kitap listeler
             var user = User.FindFirst(ClaimTypes.NameIdentifier);
             var userId = Int32.Parse(user.Value);
             ViewBag.bookname=bookname;
@@ -41,13 +47,17 @@ namespace KutuphaneOtomasyon.Controllers
             }
             var totalbook= books.Count();
 
-            var bookspage = books.Skip((page - 1) * pagesize).Take(pagesize).ToList();
+            var bookspage = books.Skip((page - 1) * pagesize).Take(pagesize).ToList();//Sayfalama işlemi yaptık
             ViewBag.TotalPage = Math.Ceiling((double)totalbook / pagesize);
             ViewBag.CurrentPage = page;
 
             return View(books);
         }
 
+        /// <summary>
+        /// Kullanıcaya kütüphane duyularını listeler
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Notifications() 
         {
             var notifacations = context.Notifications.ToList();
@@ -55,10 +65,6 @@ namespace KutuphaneOtomasyon.Controllers
         }
 
        
-        public async Task< IActionResult> Logout() 
-        {
-           await  HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login","Index");
-        }
+         
     }
 }

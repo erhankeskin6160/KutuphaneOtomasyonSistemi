@@ -10,6 +10,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!DOCTYPE html>
 <html>
 <head>
+	
 	<title>Metro Panel Flat Bootstarp Resposive Website Template| Home :: w3layouts</title>
 	<link href="/web2/css/bootstrap.css" rel="stylesheet" type='text/css' />
 	<!-- Custom Theme files -->
@@ -161,6 +162,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<!-- chart -->
 	<script src="/web2/css/User/js/Chart1.js"></script>
 	<!-- //chart -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+	<style>
+		#book {
+			width: 60px;
+			height: 60px;
+		}
+
+	</style>
 </head>
 <body>
  
@@ -175,28 +184,28 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<i class="dollar"></i>
 					</div>
 					<div class="icon-text">
-						<h3>15896</h3>
-						<p>Sales</p>
+					<h3>@ViewBag.balance</h3>
+						<p>Bakiye</p>
 					</div>
 					<div class="clearfix"></div>
 				</div>
-				<div class="new-users">
-					<div class="icon">
-						<i class="user1"></i>
-					</div>
-					<div class="icon-text">
-						<h3>5356</h3>
-						<p>New Users</p>
-					</div>
-					<div class="clearfix"></div>
+			<div class="sales">
+				<div class="icon">
+					<i class="fa-solid fa-book"></i>
 				</div>
+				<div class="icon-text">
+					<h3>@ViewBag.balance</h3>
+					<p>Bakiye</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
 				<div class="orders">
 					<div class="icon">
-						<i class="order"></i>
+					<i class="fa-solid fa-book" id="book"></i>
 					</div>
 					<div class="icon-text">
-						<h3>26856</h3>
-						<p>New Orders</p>
+					<h3>@ViewBag.usercart</h3>
+						<p>Sepett Kitap Sayı</p>
 					</div>
 					<div class="clearfix"></div>
 				</div>

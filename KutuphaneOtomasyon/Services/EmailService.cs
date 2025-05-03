@@ -13,6 +13,7 @@
         private readonly string _emailSender = "5c079f740e46fe0e62891fe27ff8c875";
         private readonly string _emailPassword = "f47708d4feef81aae81d39c877985b63";
 
+
         public async Task SendAsync(string toEmail, string subject, string message, bool isHtml = true)
         {
             throw new Exception();

@@ -29,6 +29,9 @@ namespace KutuphaneOtomasyon.Controllers
             ViewData["UserBooks"] = userBooks;
             var userbook = dbcontext.BookLoans.Include(x => x.Book).Where(x => x.UserId == userıd).ToList();
 
+            var usercart = dbcontext.CartItems.Where(x=>x.Id==userıd).ToList(); //Kullanıcının seppeteki kitao sayısını aldık
+            ViewBag.usercart = usercart.Count().ToString(); 
+
 
             return View(bakiye);
             }

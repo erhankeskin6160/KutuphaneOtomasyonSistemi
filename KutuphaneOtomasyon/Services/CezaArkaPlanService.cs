@@ -30,7 +30,7 @@ namespace KutuphaneOtomasyon.Services
                     {
                         _logger.LogError($"Serviste hata oluştu: {ex.Message}");
                     }
-                }
+                }//using kullanmamızın sebebi işlem bittikten otomatik olarak bellekten(ram'den) temizler
                 await Task.Delay(timeSpan, stoppingToken);
 
             }
