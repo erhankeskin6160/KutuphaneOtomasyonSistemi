@@ -1,0 +1,35 @@
+﻿ @model List<Notifications>
+@{
+    Layout = null;
+    string renk = "";
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+<h2>Duyurular</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Duyuru No</th>
+        <th>Kategori</th>
+        <th>Tarih</th>
+        <th>Sil</th>
+        <th>İçerik</th>
+    </tr>
+    @foreach (var notifications in Model)
+    {
+
+       
+        <tr class="@renk">
+            <td>@notifications.Id</td>
+            <td>@notifications.Subject</td>
+            <td>@Convert.ToDateTime(notifications.dateTime).ToString("dd/MM/yyyy")</td>
+            <td><a href="/Admin/DeleteNotifications/@notifications.Id" class="btn btn-danger">Sil</a></td>
+            <td><a href="/Admin/DetailNotifications/@notifications.Id" class="btn btn-default" style="background-color:skyblue">Detaylar</a></td>
+        </tr>
+    }
+</table>
+<br />
+<a href="/DetailNotifications/AddNotifications" class="btn btn-primary">Yeni Duyuru Eklee</a>
