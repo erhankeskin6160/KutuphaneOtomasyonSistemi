@@ -14,25 +14,17 @@ html {
     height: 100%;
 }
 
-body {
+/*body {
     background-color: $base-bgcolor;
     color: $base-color;
     font: $base-font-weight #
 
-{
-    $base-font-size
-}
-
-/# {
-    $base-line-height
-}
-
 $base-font-family, $base-font-family-fallback;
 margin: 0;
 min-height: 100%;
-}
+}*/
 
-.align {
+/*.align {
     align-items: center;
     display: flex;
     flex-direction: row;
@@ -56,7 +48,7 @@ min-height: 100%;
     &__main
 
 {
-}
+}*/
 
 &__logo {
     margin-bottom: 2rem;
@@ -116,6 +108,7 @@ svg {
     height: auto;
     max-width: 100%;
     vertical-align: middle;
+
 }
 
 $link-color: #7e8ba3;
@@ -125,8 +118,9 @@ a {
 }
 
 .register {
-    box-shadow: 0 0 250px #000;
-    text-align: center;
+    /*scrollbar-darkshadow-color:aquamarine*/
+/*    box-shadow: 9px 12px 0 #16A085;
+*/    text-align: center;
     padding: 4rem 2rem;
     input
 
@@ -145,6 +139,7 @@ a {
 
 &[type="email"] {
     background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#242c37"><path d="M256.017 273.436l-205.17-170.029h410.904l-205.734 170.029zm-.034 55.462l-205.983-170.654v250.349h412v-249.94l-206.017 170.245z"/></svg>');
+
 }
 
 &[type="password"] {
@@ -152,11 +147,19 @@ a {
 }
 
 &[type="submit"] {
-    background-image: linear-gradient(160deg, #8ceabb 0%, #378f7b 100%);
-    color: #fff;
-    margin-bottom: 6rem;
-    width: 100%;
+/*background-color:#16a085;
+   color: #fff;
+    margin-bottom: 6rem;*/
 }
-
-}
-}
+    /*}
+*/
+/*.shadow-box {
+    position: absolute;
+    top: 152px;
+    left: 100px;
+    width: 450px;
+    height: 450px;
+    background-color: #f7c600;*/ /* Sarı renk */
+    /*border-radius: 10px;
+    z-index: 0;
+}*/

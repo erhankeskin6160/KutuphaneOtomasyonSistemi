@@ -1,21 +1,38 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
+
+@{
+
+    var islogin = User.Identity.IsAuthenticated;
+
+    }
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] KütüphaneOtomasyonSistemi</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">  
+        <link rel="stylesheet" href="~/css/bootstrap.css" />
+
+    <link rel="stylesheet" href="~/css/site.css"  />
+
     @* <link rel="stylesheet" href="~/KütüphaneOtomasyonSistemi.styles.css" asp-append-version="true" /> *@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+      /*   .navbar.bg-primary {
+            background-color: #2C3E50 !important;
+            /* istediğin renk */
+        }  */
+    </style>
 
 </head>
+
 <body class="d-flex flex-column min-vh-100">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="border-radius: 0; padding-top: 0.5rem; padding-bottom: 0.5rem;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark"
+        style="border-radius: 0; padding-top: 0.5rem; padding-bottom: 0.5rem;">
         <div class="container">
             <!-- Sepet ikonu -->
             <a href="@Url.Action("ViewCart", "Cart")" id="cart-icon" class="me-3 text-white">
@@ -27,7 +44,8 @@
             <a class="navbar-brand" href="/Home/Index">Kütüphane</a>
 
             <!-- Hamburger butonu (mobilde aç/kapa için) -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Menüyü Aç/Kapat">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Menüyü Aç/Kapat">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -40,18 +58,35 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/Home/Book">Kitaplar</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Login/Index">Üye Giriş</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Üye Ol</a>
-                    </li>
+
+                    @if (islogin==true)
+{
+    <li class="nav-item">
+    <a href="/User/Index" class="btn btn-sm btn-primary">Profilim</a>
+     </li>
+      <li class="nav-item">
+    <a href="/Login/Logout" class="btn btn-sm btn-primary">Çıkış Yap</a>
+                        </li>
+                    }
+else
+{
+     <li class="nav-item">
+<a href="/Login/Index" class="btn btn-sm btn-primary">Üye Giris</a>
+                        </li>
+
+                        <li class="nav-item">
+<a href="/Login/Register" class="btn btn-sm btn-primary">Çıkış Yap</a>
+ </li>
+}
+
+
+                     
                 </ul>
             </div>
         </div>
     </nav>
-
-
+    
+   
     <div class="container">
         @RenderBody()
     </div>
@@ -62,7 +97,40 @@
         </div>
     </footer> *@
 
+    <footer>
+        <div class="footer mt-4 text-bg-dark py-1 text-white">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 mt-3 text-center">
+                        <h6>Kitaplar</h6>
+                        <ul class="list-unstyled">
+    <li><a href="#">Tarih</a></li>
+        <li><a href="#">Bilişim</a></li>
+            <li><a href="#">Matematik</a></li>
+                <li><a href="#">Din ve Tasavvuf</a></li>
+               <li><a href="#">Edebiyat</a></li>
+               </ul>
+
+                    </div>
+                    <div class="col-md-6 mt-3 text-center">
+                        <h6>Üye Giriş</h6>
+                        <ul class="list-unstyled">
+    <li><a href="#">Kayıt Ol</a></li>
+    <li><a href="#">Giriş Yap</a></li>
+
+</ul>
+
+                    </div>
+                  <hr />
+                  
+<p class="text-center"> 2025 Bilişim Projesi Ödevi</p> <h2 class="text-center" >Kütüphane Otomasyonu</h2>
+
+                </div>
+            </div>
+        </div>
+    </footer>
 
 
 </body>
+
 </html>

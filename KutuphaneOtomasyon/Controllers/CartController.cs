@@ -14,10 +14,7 @@ namespace KutuphaneOtomasyon.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
+        
         /// <summary>
         /// Kullanıcının sepettini gösterir
         /// </summary>
@@ -25,10 +22,22 @@ namespace KutuphaneOtomasyon.Controllers
         public IActionResult ViewCart()
         {
             var user = User.FindFirst(ClaimTypes.NameIdentifier);
-            var userıd = Convert.ToInt32(user.Value);
+            
 
-            var caritem = _context.CartItems.Include(x => x.Book).ThenInclude(x => x.Author).Where(x => x.UserId ==userıd).ToList();
-            return View(caritem);
+            if (user==null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            {
+                var userıd = Convert.ToInt32(user.Value);
+                var caritem = _context.CartItems.Include(x => x.Book).ThenInclude(x => x.Author).Where(x => x.UserId == userıd).ToList();
+                return View(caritem);
+            }              
+
+           
+
+         
         }
 
         [HttpPost]
@@ -52,7 +61,7 @@ namespace KutuphaneOtomasyon.Controllers
             if (totalQuantityInCart >= 3)
             {
                 TempData["ErroCart"] = "Sepete en fazla 3 kitap ekleyebilirsin";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("ViewCart", "Home");
             }
             if (existingCartItem!=null)
             {
@@ -103,7 +112,7 @@ namespace KutuphaneOtomasyon.Controllers
                 _context.SaveChanges();     
 
             }
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("ViewCart", "Home");
 
 
         }
@@ -123,7 +132,7 @@ namespace KutuphaneOtomasyon.Controllers
             if (totalbook>=3)
             {
                 TempData["ErroCart"] = "Sepete ekledikeriniz  ve üzerinizde  bulunan kitapların toplam adeti 3 geçemez";
-                return RedirectToAction("Index", "Cart");
+                return RedirectToAction("ViewCart", "Cart");
             }
 
              

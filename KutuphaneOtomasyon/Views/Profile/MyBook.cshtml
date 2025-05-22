@@ -2,13 +2,13 @@
 
 
 <form method="get">
-    <div class="form-group">
+    <div class="form-group mb-4 m-auto">
         <input type="hidden" name="BookId" />
-        <label for="bookTitle">Kitap Adı:</label>
-        <input type="text" name="BookName" id="BookName" class="form-control" value="@ViewBag.SelectedBookTitle" />
+        <input type="text" name="BookName" id="BookName" class="form-control w-75 mt-3 d-inline-block py-2" value="@ViewBag.SelectedBookTitle"  placeholder="Kitap Adı"/>
+        <button type="submit" class="btn btn-primary d-inline-block rounded-1 btn-sm py-2">Filtrele</button>
+
     </div>
 
-    <button type="submit" class="btn btn-primary">Filtrele</button>
 </form>
 
 <!-- Kitap Listesi -->
@@ -58,13 +58,13 @@
     {
         <div class="col-md-3 mb-4">
             <div class="card shadow">
-                <img src="/Resimler/Kitaplar/@bookLoan.Book.BookImage" class="card-img-top" alt="Kitap Resmi" style="height: 200px;">
+                <img src="@bookLoan.Book.BookImage" class="card-img-top" alt="Kitap Resmi" style="height: 27.5rem;width:auto; background-size:cover">
                 <div class="card-body">
-                     <h5 class="card-title">@bookLoan.Book.BookName</h5>
-                    <p>📅 Aldığı Tarih: @bookLoan.LoanDate.ToShortDateString()</p>
-                    <p>⏰ Teslim Tarihi: @bookLoan.DeliveryDate.ToShortDateString()</p>
-                    <p>📚 Kategori: @bookLoan.Book.Category.CategoryName</p>
-                    <a href="@Url.Action("ReturnBook", "Book", new {loanıd =bookLoan.Id })" class="btn btn-danger">Kitabı Teslim</a>
+                     <h5 class="card-title text-center mb-4">@bookLoan.Book.BookName</h5>
+                    <p class="fw-lighter" style="margin-left:2px;">📅 Aldığı Tarih: @bookLoan.LoanDate.ToShortDateString()</p>
+                    <p class="fw-lighter">⏰ Teslim Tarihi: @bookLoan.DeliveryDate.ToShortDateString()</p>
+                    <p class="fw-lighter">📚 Kategori: @bookLoan.Book.Category.CategoryName</p>
+                    <a href="@Url.Action("ReturnBook", "Book", new {loanıd =bookLoan.Id })" class="btn btn-danger text-center ms-5">Kitabı Teslim</a>
                 </div>
             </div>
         </div>

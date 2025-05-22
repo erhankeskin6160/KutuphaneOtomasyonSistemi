@@ -9,42 +9,95 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <link href="/css/LoginController/login.css" rel="stylesheet" />
+
 
 </head>
 <body class="align">
 
-    <div class="grid align__item">
+    @if (ViewBag.SuccesLogin!= null)
+    {
+        <div id="succeslogin" class="alert alert-success mt-1" role="alert">
+            @ViewBag.SuccesLogin
+        </div>
 
-        <div class="register">
 
-            <svg xmlns="http://www.w3.org/2000/svg" class="site__logo" width="56" height="84" viewBox="77.7 214.9 274.7 412"><defs><linearGradient id="a" x1="0%" y1="0%" y2="0%"><stop offset="0%" stop-color="#8ceabb" /><stop offset="100%" stop-color="#378f7b" /></linearGradient></defs><path fill="url(#a)" d="M215 214.9c-83.6 123.5-137.3 200.8-137.3 275.9 0 75.2 61.4 136.1 137.3 136.1s137.3-60.9 137.3-136.1c0-75.1-53.7-152.4-137.3-275.9z" /></svg>
+    }
+    @if (ViewBag.ErrorLogin != null)
+    {
+        <div id="loginErrorAlert" class="alert alert-danger mt-1" role="alert">
+            @ViewBag.ErrorLogin
+        </div>
 
-            <h2>Sign Up</h2>
 
-            <form action="" method="post" class="form">
+    }  
+
+    <script>
+        setTimeout(function () {
+            var alert = document.getElementById("succeslogin");
+            if (alert) {
+                alert.style.transition = "opacity 0.5s ease-out";
+                alert.style.opacity = "0";
+
+                // Tamamen gizlemek için DOM'dan da kaldırmak istersen:
+                setTimeout(function () {
+                    alert.remove();
+                }, 500);
+            }
+        }, 3000); // 3000 milisaniye = 3 saniye
+
+
+        setTimeout(function () {
+            var alert = document.getElementById("loginErrorAlert");
+            if (alert) {
+                alert.style.transition = "opacity 0.5s ease-out";
+                alert.style.opacity = "0";
+
+                // Tamamen gizlemek için DOM'dan da kaldırmak istersen:
+                setTimeout(function () {
+                    alert.remove();
+                }, 500);
+            }
+        }, 3000); // 3000 milisaniye = 3 saniye
+    </script>
+
+    <div class="grid align__item d-flex justify-content-center" style="position:relative;min-height:100%;">
+        <div class="position-absolute bg-primary rounded-3 w-50 h-75" style="top: 130px; left: 335px; z-index: 0; border:2px solid black;"></div>
+
+        <div class="register bg-light w-50 h-50 text-center mt-5 m-auto rounded-3 mb-5" style="position: relative; z-index: 1; border:2px solid black;">
+
+           
+
+            <h2 class="mb-2">Giriş Yap</h2>
+            <p class="text-muted">Kimlik bilgilerinizi girin.</p>
+
+            <form action="" method="post" class="form mt-5">
 
                 <input type="hidden" asp-for="Id" value="" />
                 <input type="hidden" asp-for="Role" value="" />
 
-                <div class="form__field">
+                <div class="form__field mt-2">
                     <input type="email" asp-for="Email" placeholder="info@mailaddress.com">
+                     
+                    <br />
+                    <span asp-validation-for="Email" class="text-danger my-2"></span>
                 </div>
 
 
-                <div class="form__field">
+                <div class="form__field mt-2">
                     <input type="password" asp-for="Password" placeholder="••••••••••••">
+                    <br />
+                    <span asp-validation-for="Password" class="text-danger my-2"></span>
                 </div>
+                <div class="g-recaptcha mt-3 d-inline-block" data-sitekey="6LcIgBsrAAAAACLVKy4ta1axLXj_mTr78Q6Ykk2Q"></div>
 
-                <div class="g-recaptcha" data-sitekey="6LcIgBsrAAAAACLVKy4ta1axLXj_mTr78Q6Ykk2Q"></div>
-
-
-                <div class="form__field">
-                    <input type="submit" value="Sign Up">
+                <div class="form__field mt-2 " style="width:auto; height:70px;">
+                    <input type="submit" value="Giriş Yap" class="w-100 bg-primary text-white">
                 </div>
 
             </form>
 
-            <p>Already have an accout? <a href="#">Log in</a></p>
+          <a href="/Login/ForgotPassword" class="text-decoration-none text-dark fw-bolder">Şifremi Unuttum</a>
 
         </div>
 

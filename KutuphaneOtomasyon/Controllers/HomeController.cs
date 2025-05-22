@@ -27,7 +27,14 @@ namespace KütüphaneOtomasyonSistemi.Controllers
                 .Take(4)
                 .ToList();
 
+
+            var newbook=dbcontext.Books
+                .OrderByDescending(x => x.BookId)
+                .Take(4)
+                .ToList();
+
             ViewBag.rastgelekitap = rastgelekitap;
+            ViewBag.newbook = newbook;
             return View(rastgelekitap);
         }
 

@@ -31,6 +31,10 @@ namespace KutuphaneOtomasyon.Models
         [Required(ErrorMessage ="Lütfen Fotoğrafınızı Yükleyiniz")]
         public string? UserImg { get; set; }// Kullanıcı Fotoğrafı
 
+
+        public int FailedLoginAttempts { get; set; } = 0; // Başarısız giriş sayısı sayacı
+
+        public DateTime? LockoutEnd { get; set; }// Kitleme zamanı
         public decimal? Balance { get; set; }// 
     }
 }

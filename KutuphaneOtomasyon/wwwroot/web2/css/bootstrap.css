@@ -5,7 +5,7 @@
  */
 
 /*! normalize.css v3.0.0 | MIT License | git.io/normalize */
-html {
+/*html {
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
@@ -1663,9 +1663,9 @@ input[type="search"] {
 input[type="radio"],
 input[type="checkbox"] {
   margin: 4px 0 0;
-  margin-top: 1px \9;
+  margin-top: 1px \9;*/
   /* IE8-9 */
-  line-height: normal;
+  /*line-height: normal;
 }
 input[type="file"] {
   display: block;
@@ -5785,5 +5785,5 @@ button.close {
   .hidden-print {
     display: none !important;
   }
-}
+}*/
 /*# sourceMappingURL=bootstrap.css.map */

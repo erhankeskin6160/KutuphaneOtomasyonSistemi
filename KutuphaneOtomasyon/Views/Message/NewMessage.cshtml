@@ -4,24 +4,42 @@
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
+<head>
+
+
+</head>
+
 <form class="form-group" method="post" asp-action="NewMessage" asp-controller="Message">
-    <div></div>
+
+    <div class="container">
+        <div class="row">
+
+<div class="col-9 offset-1">
+
+                <div class="position-absolute bg-primary rounded-3 w-50 h-50 rounded-3" style="top: 125px; left: 540px; z-index: 1; border:2px solid black;"></div>
+
+                <div class="bg-light p-3 mt-5 shadow-sm bi-border-top rounded-3 " style="border:2px solid black; position:relative; z-index:2" >
+
+                    <h3 class="text-center mt-2"> Yeni Mesaj Gönder</h3>
     <div style="margin-top:15px">
-        <label>Alıcı Mail</label>
-        <input type="text"   asp-for="Receiver" class="form-control">
+
+        <input type="text"   asp-for="Receiver" class="form-control" placeholder="Alıcı Mail">
 
     </div>
     <div style="margin-top:15px">
-        <label>Konu</label>
-        <input type="text" asp-for="Subject" class="form-control">
+        <input type="text" asp-for="Subject" class="form-control" placeholder="Konu">
     </div>
     <div style="margin-top:15px">
-        <label>İçerik</label>
        
-        <textarea asp-for="Content" class="form-control"></textarea>
+       
+        <textarea asp-for="Content" class="form-control" placeholder="İçerik"></textarea>
     </div>
     <div style="margin-top:15px">
-        <button class="btn btn-info" id="Btn1">Gönder</button>
+        <button class="btn btn-primary w-100 mb-2" id="Btn1">Gönder</button>
+    </div>
+                </div>
+    </div>
+    </div>
     </div>
 </form>
 

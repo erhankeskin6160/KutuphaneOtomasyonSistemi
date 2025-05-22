@@ -28,12 +28,10 @@
             flex-direction: column;
         }
 
-        .header-space {
-            height: 15vh;
-        }
+      
 
         .container {
-            margin-top:115px;
+         
             
             width: 150%;
               
@@ -102,9 +100,10 @@
             }
 
             .book-card img {
-                width: 140px;
-                height: 200px;
+                width: 180px;
+                height: 240px;
                 object-fit: cover;
+                background-size:cover;
                 margin-bottom: 15px;
                 border-radius: 8px;
                 box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -148,7 +147,7 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: var(--primary-color);
+            background: #16A085;
             border: none;
             cursor: pointer;
             width: 50px;
@@ -164,7 +163,6 @@
         }
 
             .scroll-button:hover {
-                background: var(--secondary-color);
                 transform: translateY(-50%) scale(1.1);
             }
 
@@ -191,13 +189,13 @@
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            background: rgba(67, 97, 238, 0.3);
+            background: #59E595;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
             .page-dot.active {
-                background: var(--primary-color);
+                background: #16A085;
                 transform: scale(1.2);
             }
 
@@ -228,22 +226,23 @@
             height: 180px;
         }
 
-        }
+        
+        
     </style>
 </head>
 <body>
-    <div class="header-space"></div> <!-- %15 boşluk eklendi -->
+   
 
-    <div class="container col-12">
-        <h2><i class="fa-solid fa-book-open-reader"></i> Okuduğum Kitaplar</h2>
+    <div class="container col-12 mt-1">
+        <h2><i class="fa-solid fa-book-open-reader text-primary"></i> Okuduğum Kitaplar</h2>
 
         <div class="books-container">
-            <button class="scroll-button left" onclick="scrollBooks(-1)"><i class="fas fa-chevron-left"></i></button>
+            <button class="scroll-button left" onclick="scrollBooks(-1)"><i class="fas fa-chevron-left bg-primary"></i></button>
             <div class="book-list" id="bookList">
                 @foreach (var item in (List<BookLoan>)ViewData["UserBooks"])
                 {
-                    <div class="book-card">
-                        <img src="/Resimler/Kitaplar/@item.Book.BookImage" alt="@item.Book.BookName">
+                    <div class="book-card w-25">
+                        <img src="@item.Book.BookImage" alt="@item.Book.BookName">
                         <div class="book-info">
                             <div class="book-title">@item.Book.BookName</div>
                             <div class="book-author">@item.Book.Author.AuthorName</div>

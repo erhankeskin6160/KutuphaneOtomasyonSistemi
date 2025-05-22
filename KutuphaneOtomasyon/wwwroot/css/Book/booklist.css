@@ -1,8 +1,10 @@
-﻿.card {
+﻿/*.card {
     margin-top: 5px;
     border: 1px solid #ddd;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     position: relative;
+    min-width: 13rem;
+    min-height: 40rem;
 }
 
 .edit-button {
@@ -15,7 +17,7 @@
     color: #fff;
     border: none;
     border-radius: 5px;
-    visibility: hidden; /* Başlangıçta gizlenir */
+    visibility: hidden;
 }
 .edit-button:hover {
     border-radius:50%;
@@ -37,7 +39,7 @@
 }
 
 .card:hover .edit-button{
-    visibility: visible; /* Kart üzerine gelindiğinde görünür */
+    visibility: visible;  Kart üzerine gelindiğinde görünür 
 }
 .card:hover .deletes-button
 {
@@ -86,3 +88,4 @@
     height: 593px;
     width: 210px;
 }
+*/

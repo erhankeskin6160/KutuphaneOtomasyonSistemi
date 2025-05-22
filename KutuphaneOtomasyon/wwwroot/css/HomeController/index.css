@@ -4,18 +4,8 @@ body {
     background-color: #f4f4f4;
 }
 
-.navbar {
-    background-color: #343a40;
-}
 
-.navbar-brand {
-    color: #ffffff;
-    font-weight: bold;
-}
-
-    .navbar-brand:hover {
-        color: #f4f4f4;
-    }
+  
 .heros {
     background-image: url("/css/HomeController/desktop-wallpaper-library-backgrounds.jpg");
     background-size: cover;
@@ -23,6 +13,9 @@ body {
     color: #ffffff;
     text-align: center;
     padding: 100px 0;
+  
+
+
 }
 
     .heros h1 {
@@ -40,13 +33,17 @@ body {
     .category-card:hover {
         transform: scale(1.05);
     }
-
-.footer {
-    background-color: #343a40;
-    color: #f4f4f4;
-    text-align: center;
-    padding: 20px;
+.kitap-card{
+    min-width:13rem;
+    min-height:50rem;
 }
+
+.kitap-card img {
+    width: 100%;
+    height: 28rem;
+    background-size: cover;
+}
+
 #alert-message {
     transition: opacity 0.5s ease-out;
 }
@@ -57,3 +54,8 @@ body {
     }
 
 
+
+.islev-button{
+    width:155px;
+    height:45px;
+}

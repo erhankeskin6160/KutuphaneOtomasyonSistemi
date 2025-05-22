@@ -52,7 +52,7 @@ builder.Services.AddScoped<Cezaservice>();
 builder.Services.AddScoped<CezaArkaPlanService>();
 builder.Services.AddHostedService<CezaArkaPlanService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
-    builder.Services.AddHttpClient();
+builder.Services.AddHttpClient();
 builder.Services.AddScoped<GoogleReCaptchaService>();
 
 

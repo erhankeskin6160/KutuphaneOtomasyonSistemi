@@ -27,7 +27,7 @@ namespace KutuphaneOtomasyon.Controllers
         private readonly AppDbContext _contex;
         private readonly IEmailService emailService;
 
-        private AppDbContext dbContext;
+         
         private readonly IMapper _mapper;
         private readonly GoogleReCaptchaService _googleReCaptcha;
 
@@ -55,43 +55,77 @@ namespace KutuphaneOtomasyon.Controllers
         [AllowAnonymous]
 
         [HttpPost]
-            public async Task<IActionResult> Index(User user)
-            {
-                var token = Request.Form["g-recaptcha-response"];
-                var isValidCaptcha = await _googleReCaptcha.VerifyToken(token);
+        [HttpPost]
+        public async Task<IActionResult> Index(User user)
+        {
+            var token = Request.Form["g-recaptcha-response"];
+            var isValidCaptcha = await _googleReCaptcha.VerifyToken(token);
 
-            if (isValidCaptcha==false)
+            // Recaptcha doğrulaması
+            if (isValidCaptcha == false)
             {
                 ModelState.AddModelError(string.Empty, "Lütfen Recaptha Doğrulamasını tamamla");
                 return View(user);
-
             }
             else
             {
-                var info = _contex.Users.FirstOrDefault(x => x.Email == user.Email && x.Password == user.Password);
-                if (info != null)
+                var info = _contex.Users.FirstOrDefault(x => x.Email == user.Email);
+
+                // Kullanıcıyı bul
+                if (info == null)
                 {
+                    ViewBag.ErrorLogin = "Giriş İşlemi Başarısız";
+                    return View(user);
+                }
+
+                // Kullanıcı kilitlenmiş mi, kontrol et
+                if (info.LockoutEnd != null && info.LockoutEnd > DateTime.Now)
+                {
+                    var remainingTime = ((DateTime)info.LockoutEnd - DateTime.Now).Minutes;
+                    ViewBag.ErrorLogin = $"Hesabınız {remainingTime} dakika kilitlenmiştir . Lütfen daha sonra tekrar deneyin.";
+                    return View(user);
+                }
+
+                // Şifre doğruysa
+                if (info.Password == user.Password)
+                {
+                    info.FailedLoginAttempts = 0;
+                    info.LockoutEnd = null;
+
                     var claim = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, info.Email),
-                        new Claim(ClaimTypes.Role, "User"),
-                        new Claim(ClaimTypes.NameIdentifier,info.Id.ToString())
-                    };
+            {
+                new Claim(ClaimTypes.Name, info.Email),
+                new Claim(ClaimTypes.Role, "User"),
+                new Claim(ClaimTypes.NameIdentifier, info.Id.ToString())
+            };
                     var identity = new ClaimsIdentity(claim, "UserCookies");
                     var principal = new ClaimsPrincipal(identity);
 
-                    HttpContext.SignInAsync("UserCookies", principal);
+                    ViewBag.SuccesLogin = "Giriş Başarılı, Yönlendiriliyorsunuz";
+                    await HttpContext.SignInAsync("UserCookies", principal);
+
+
                     return RedirectToAction("Index", "User");
                 }
                 else
                 {
-                    ViewData["ErrorLogin"] = "Giriş İşlemi Başarısız";
-                    return View();
+                    info.FailedLoginAttempts++;
+                    if (info.FailedLoginAttempts >= 3)
+                    {
+                        info.LockoutEnd = DateTime.Now.AddMinutes(5); // 5 dakika kilitle
+                        ViewBag.ErrorLogin = "Hesabınız 5 dakika süreyle kilitlenmiştir.";
+                    }
+                    else
+                    {
+                        ViewBag.ErrorLogin = "Giriş İşlemi Başarısız";
+                    }
+                    await _contex.SaveChangesAsync();
                 }
+               
+                return View();
             }
-
-           
         }
+
         [HttpGet]
         public IActionResult Register() 
         {
@@ -126,12 +160,15 @@ namespace KutuphaneOtomasyon.Controllers
                     }
 
                     user.UserImg = filename + extension;
+                    
                 }
 
                 _contex.Users.Add(user);
                 await _contex.SaveChangesAsync();
+                ViewBag.SuccesLogin = "Kayıt işlemi başarılı sayfaya yönlendiriliyorsunuz";
 
-                return RedirectToAction("Index");
+
+                return View();
             }
             
 

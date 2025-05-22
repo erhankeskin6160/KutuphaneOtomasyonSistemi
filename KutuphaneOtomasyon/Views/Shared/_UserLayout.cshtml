@@ -16,21 +16,22 @@
     <title>Mvc5 ile Kütüphane Sistemi</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="~/css/Profile/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    @* <link href="~/css/Profile/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> *@
     <!-- FontAwesome (Zil ikonu için) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    @* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"> *@
     <!-- Custom styles for this template -->
     <link href="~/css/Profile/profile.css" rel="stylesheet">
+         <link rel="stylesheet" href="~/css/bootstrap.css"/>
 
     <style>
         /* Bildirim Zilinin Konumlandırılması */
         .notification-icon {
             position: absolute;
-            top: 10px;
-            left: 15px;
+            top: 20px;
+            left: 175px;
             font-size: 22px;
             cursor: pointer;
-            color: #333;
+            color: white;
         }
 
         .notification-badge {
@@ -43,53 +44,72 @@
             padding: 5px 8px;
             font-size: 14px;
         }
-    </style>
+
+        .list-group a{
+        text-decoration-line:none;    
+        }
+
+        .navbar-dark .navbar-toggler-icon {
+            filter: invert(1); /* Beyaza çevirir */
+        }
+
+        .list-group-item {
+            border: none;
+        }
+        </style>
 </head>
 <body>
 
     <div class="d-flex" id="wrapper">
 
         <!-- Sidebar -->
-        <div class="bg-light border-right" id="sidebar-wrapper">
+        <div class="text-bg-dark border-right" id="sidebar-wrapper">
             <div class="sidebar-heading">
-                Öğrenci Paneli
+                <span class="text-white">Öğrenci Paneli<span>
                 <!-- Bildirim Zili -->
                 <i class="fa-solid fa-bell notification-icon"></i>
                 <span id="notification-count" class="notification-badge d-none">0</span>
             </div>
             <div class="list-group list-group-flush">
-                <a href="/User/Index/" class="list-group-item list-group-item-action bg-light">Ana Sayfa</a>
-                <a href="/User/Profile/" class="list-group-item list-group-item-action bg-light">Profilim</a>
-                <a href="/Message/Index/" class="list-group-item list-group-item-action bg-light">
-                    <i class="fas fa-inbox"></i>
-                    <span class="badge bg-primary float-right">@gelenmesajsayısı.ToString()</span>
+                <a href="/User/Index/" class="list-group-item list-group-item-action text-bg-dark text-decoration-none">Ana Sayfa</a>
+                <a href="/User/Profile/" class="list-group-item list-group-item-action text-bg-dark text-decoration-none ">Profilim</a>
+                <a href="/Message/Index/" class="list-group-item list-group-item-action text-bg-dark text-decoration-none">
+                    
+                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="18" viewBox="0,0,256,256">
+                        <defs><linearGradient x1="24" y1="17.637" x2="24" y2="27.264" gradientUn    its="userSpaceOnUse" id="color-1_zexuQUcm590L_gr1"><stop offset="0" stop-color="#ffffff"></stop><stop offset="1" stop-color="#ffffff"></stop></linearGradient><linearGradient x1="24.08" y1="40.747" x2="22.399" y2="25.121" gradientUnits="userSpaceOnUse" id="color-2_zexuQUcm590L_gr2"><stop offset="0" stop-color="#ffffff"></stop><stop offset="1" stop-color="#2c3e50"></stop></linearGradient><linearGradient x1="24" y1="26.473" x2="24" y2="44.538" gradientUnits="userSpaceOnUse" id="color-3_zexuQUcm590L_gr3"><stop offset="0.309" stop-color="#ffffff"></stop><stop offset="1" stop-color="#ffffff"></stop></linearGradient><linearGradient x1="15.001" y1="-4.061" x2="28.715" y2="22.444" gradientUnits="userSpaceOnUse" id="color-4_zexuQUcm590L_gr4"><stop offset="0" stop-color="#ffffff"></stop><stop offset="1" stop-color="#ffffff"></stop></linearGradient></defs>
+                        <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.33333,5.33333)"><path d="M46,29h-44l3.911,-11h36.178z" fill="#ffffff"></path><rect x="7" y="19" width="34" height="7" fill="url(#color-1_zexuQUcm590L_gr1)"></rect><path d="M44,40h-40l3,-14h34z" fill="url(#color-2_zexuQUcm590L_gr2)"></path><path d="M46,42h-44v-13h12.991c1.65646,3.45781 5.17541,5.63387 9.009,5.571c3.83042,0.05958 7.3451,-2.11601 9,-5.571h13z" fill="url(#color-3_zexuQUcm590L_gr3)"></path><path d="M45.64,28c-1.18,-3.34 -2.37,-6.66 -3.55,-10h-36.18c-1.18,3.34 -2.37,6.66 -3.55,10l-0.36,1h12.99c1.51656,3.63325 5.06794,5.99921 9.005,5.99921c3.93706,0 7.48844,-2.36596 9.005,-5.99921h13zM33,28c-0.14448,0.34397 -0.31151,0.67803 -0.5,1c-1.71997,3.08667 -4.97647,5.00001 -8.51,5.00001c-3.53353,0 -6.79003,-1.91334 -8.51,-5.00001c-0.18521,-0.32216 -0.3489,-0.65622 -0.49,-1h-10.69c0.57,-1.89 1.13,-3.78 1.7,-5.67c0.33,-1.11 0.67,-2.22 1,-3.33h34c0.33,1.11 0.67,2.22 1,3.33c0.57,1.89 1.13,3.78 1.7,5.67z" fill="#ffffff"></path><path d="M29,15v-13h-10v13h-5l10,8l10,-8z" fill="url(#color-4_zexuQUcm590L_gr4)"></path></g></g>
+                    </svg>
+                    <span class="badge text-bg-dark float-right">@gelenmesajsayısı.ToString()</span>
                     Gelen Mesajlar</a>
-                <a href="/Message/SentMessage/" class="list-group-item list-group-item-action bg-light">
-                    <i class="fas fa-inbox"></i> 
-                    <span class="badge bg-primary float-right">@gönderilenmesajsayısı.ToString()</span>
+                <a href="/Message/SentMessage/" class="list-group-item list-group-item-action  text-bg-dark">
+                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="18" height="18" viewBox="0,0,256,256">
+                        <defs><linearGradient x1="24" y1="18.758" x2="24" y2="24.794" gradientUnits="userSpaceOnUse" id="color-1_FWJYa8vdduXB_gr1"><stop offset="0" stop-color="#ffffff"></stop><stop offset="1" stop-color="#ffffff"></stop></linearGradient><linearGradient x1="27.638" y1="20.9" x2="23.286" y2="43.746" gradientUnits="userSpaceOnUse" id="color-2_FWJYa8vdduXB_gr2"><stop offset="0" stop-color="#2c3e50"></stop><stop offset="1" stop-color="#2c3e50"></stop></linearGradient><linearGradient x1="24" y1="25.582" x2="24" y2="43.187" gradientUnits="userSpaceOnUse" id="color-3_FWJYa8vdduXB_gr3"><stop offset="0.309" stop-color="#ffffff"></stop><stop offset="1" stop-color="#ffffff"></stop></linearGradient><linearGradient x1="16.603" y1="-1.885" x2="31.636" y2="24.522" gradientUnits="userSpaceOnUse" id="color-4_FWJYa8vdduXB_gr4"><stop offset="0" stop-color="#ffffff"></stop><stop offset="1" stop-color="#ffffff"></stop></linearGradient></defs>
+                        <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.33333,5.33333)"><path d="M46,29h-44l3.911,-11h36.178z" fill="#ffffff"></path><rect x="7" y="19" width="34" height="7" fill="url(#color-1_FWJYa8vdduXB_gr1)"></rect><path d="M44,40h-40l3,-14h29.764c1.4705,0.00014 2.92082,-0.34224 4.236,-1v0z" fill="url(#color-2_FWJYa8vdduXB_gr2)"></path><path d="M46,42h-44v-13h12.991c1.65646,3.45781 5.17541,5.63387 9.009,5.571c3.83042,0.05958 7.3451,-2.11601 9,-5.571h13z" fill="url(#color-3_FWJYa8vdduXB_gr3)"></path><path d="M45.64,28c-1.18,-3.34 -2.37,-6.66 -3.55,-10h-36.18c-1.18,3.34 -2.37,6.66 -3.55,10l-0.36,1h12.99c1.51656,3.63325 5.06794,5.99921 9.005,5.99921c3.93706,0 7.48844,-2.36596 9.005,-5.99921h13zM33,28c-0.14448,0.34397 -0.31151,0.67803 -0.5,1c-1.71997,3.08667 -4.97647,5.00001 -8.51,5.00001c-3.53353,0 -6.79003,-1.91334 -8.51,-5.00001c-0.18521,-0.32216 -0.3489,-0.65622 -0.49,-1h-10.69c0.57,-1.89 1.13,-3.78 1.7,-5.67c0.33,-1.11 0.67,-2.22 1,-3.33h34c0.33,1.11 0.67,2.22 1,3.33c0.57,1.89 1.13,3.78 1.7,5.67z" fill="#ffffff"></path><path d="M34,9l-10,-8l-10,8h5v13h10v-13z" fill="url(#color-4_FWJYa8vdduXB_gr4)"></path></g></g>
+                    </svg>
+                    <span class="badge text-bg-dark float-right">@gönderilenmesajsayısı.ToString()</span>
                    Gönderilen Mesajlar</a>
-                <a href="/Message/NewMessage/" class="list-group-item list-group-item-action bg-light">Yeni Mesaj</a>
-                <a href="/Profile/Notifications/" class="list-group-item list-group-item-action bg-light">Duyurular</a>
-                <a href="/Profile/MyBook/" class="list-group-item list-group-item-action bg-light">Kitaplarım</a>
+                <a href="/Message/NewMessage/" class="list-group-item list-group-item-action   text-bg-dark">Yeni Mesaj</a>
+                <a href="/Profile/Notifications/" class="list-group-item list-group-item-action  text-bg-dark">Duyurular</a>
+                <a href="/Profile/MyBook/" class="list-group-item list-group-item-action  text-bg-dark">Kitaplarım</a>
                 
-                <a href="/Login/Logout/" class="list-group-item list-group-item-action bg-light">Çıkış Yap</a>
+                <a href="/Login/Logout/" class="list-group-item list-group-item-action  text-bg-dark">Çıkış Yap</a>
             </div>
         </div>
         <!-- /#sidebar-wrapper -->
         <!-- Page Content -->
         <div id="page-content-wrapper">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-                <button class="btn btn-primary" id="menu-toggle">Menü</button>
+            <nav class="navbar navbar-expand-lg navbar-light  text-bg-dark border-bottom">
+                <button class="btn btn-primary btn-sm p-2 ms-2 text-white   rounded-1" id="menu-toggle">Menü</button>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon " style="color:white !important"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
                         <li class="nav-item active">
-                            <a class="nav-link" href="/Vitrin/Index/#about">Hakkımızda <span class="sr-only">(current)</span></a>
+                            <a class="nav-link text-white" href="/Vitrin/Index/#about">Hakkımızda</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Ayarlar
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">

@@ -1,5 +1,27 @@
 ﻿@model List<CartItem>
-<h2>Sepetiniz</h2>
+<h2 class="mt-5 text-center">Sepetiniz</h2>
+
+
+
+@if (TempData["ErroCart"] != null)
+{
+    <div class="alert alert-primary" role="alert" id="erroCartAlert">
+        @TempData["ErroCart"]
+    </div>
+    <script>
+        setTimeout(function () {
+            var alertBox = document.getElementById("erroCartAlert");
+            if (alertBox) {
+                alertBox.style.transition = "opacity 0.5s ease";
+                alertBox.style.opacity = 0;
+                setTimeout(function () {
+                    alertBox.remove();
+                }, 500); // fade out süresi
+            }
+        }, 5000); // 5 saniye sonra kaybolsun
+    </script>
+}
+
 <table>
     <tr>
         <th>Kitap Adı</th>
@@ -9,7 +31,7 @@
     </tr>
     @foreach (var item in Model)
     {
-        <tr>
+        <tr class="bg-primary">
             <td>@item.Book.BookName</td>
             <td>@item.Book.Author.AuthorName</td>
              <td>@item.Quantity</td> 
@@ -28,6 +50,6 @@
     }
 </table>
 
-<form asp-action="CheckoutCartItems" asp-controller="Cart" method="post">
-    <button type="submit">Ödünç Al</button>
+<form asp-action="CheckoutCartItems" asp-controller="Cart" method="post" class="d-flex">
+    <button type="submit" class="btn btn-primary w-100 ms-5 ">Ödünç Al</button>
 </form>

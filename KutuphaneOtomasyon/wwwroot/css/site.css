@@ -6,7 +6,7 @@ body {
     font-family: "Poppins", sans-serif;
     margin: 0;
     padding: 0;
-    background-color: darkslategray;
+/*    background-color: darkslategray;*/
 }
 
 header{
@@ -28,6 +28,14 @@ nav a{
     text-decoration:none;
     font-weight:bold;
     
+}
+    nav a:hover {
+        color: #16A085 !important;
+    }
+footer li a{
+    color: white !important;
+    text-decoration: none;
+    font-weight:lighter
 }
 
 header {
@@ -67,12 +75,3 @@ th, td {
 }
 
 
-footer{
-    background-color:#333;
-    color:white;
-    position:fixed;
-    bottom:0;
-    width:100%;
-    padding:10px;
-    text-align:center;
-}
