@@ -1,0 +1,106 @@
+﻿@model List<BookLoan>
+
+
+<form method="get">
+    <div class="form-group">
+        <input type="hidden" name="BookId" />
+        <label for="bookTitle">Kitap Adı:</label>
+        <input type="text" name="BookName" id="BookName" class="form-control" value="@ViewBag.SelectedBookTitle" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Filtrele</button>
+</form>
+
+<!-- Kitap Listesi -->
+@if (TempData["SuccesReturnDate"] != null)
+
+{
+    <div id="succes-message" class="alert alert-succes" role="alert">
+        @TempData["SuccesReturnDate"]
+    </div>
+    <script>
+
+        setTimeout(function () {
+            var alertMessage = document.getElementById("succes-message");
+            if (alertMessage) {
+                alertMessage.style.display = "none";
+            }
+        },10000);
+    </script>
+
+
+}
+@if (TempData["ErrorBookTotal"] != null)
+
+{
+    <div id="succes-message" class="alert alert-danger" role="alert">
+        @TempData["ErrorBookTotal"]
+    </div>
+    <script>
+
+        setTimeout(function () {
+            var alertMessage = document.getElementById("succes-message");
+            if (alertMessage) {
+                alertMessage.style.display = "none";
+            }
+        },10000);
+    </script>
+
+
+}
+
+ 
+
+
+
+<div class="row">
+    @foreach (var bookLoan in Model)
+    {
+        <div class="col-md-3 mb-4">
+            <div class="card shadow">
+                <img src="/Resimler/Kitaplar/@bookLoan.Book.BookImage" class="card-img-top" alt="Kitap Resmi" style="height: 200px;">
+                <div class="card-body">
+                     <h5 class="card-title">@bookLoan.Book.BookName</h5>
+                    <p>📅 Aldığı Tarih: @bookLoan.LoanDate.ToShortDateString()</p>
+                    <p>⏰ Teslim Tarihi: @bookLoan.DeliveryDate.ToShortDateString()</p>
+                    <p>📚 Kategori: @bookLoan.Book.Category.CategoryName</p>
+                    <a href="@Url.Action("ReturnBook", "Book", new {loanıd =bookLoan.Id })" class="btn btn-danger">Kitabı Teslim</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Sayfalama Kontrolü -->
+<div class="row">
+    <div class="col-md-12 text-center">
+        <nav aria-label="Sayfalama">
+            <ul class="pagination">
+                @if (ViewBag.CurrentPage > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="?page=@(ViewBag.CurrentPage - 1)&bookTitle=@ViewBag.SelectedBookTitle" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                }
+
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="?page=@i&bookTitle=@ViewBag.SelectedBookTitle">@i</a>
+                    </li>
+                }
+
+                @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="?page=@(ViewBag.CurrentPage + 1)&bookTitle=@ViewBag.SelectedBookTitle" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+﻿@model Message
+@{
+    ViewBag.Title = "YeniMesaj";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<form class="form-group" method="post" asp-action="NewMessage" asp-controller="Message">
+    <div></div>
+    <div style="margin-top:15px">
+        <label>Alıcı Mail</label>
+        <input type="text"   asp-for="Receiver" class="form-control">
+
+    </div>
+    <div style="margin-top:15px">
+        <label>Konu</label>
+        <input type="text" asp-for="Subject" class="form-control">
+    </div>
+    <div style="margin-top:15px">
+        <label>İçerik</label>
+       
+        <textarea asp-for="Content" class="form-control"></textarea>
+    </div>
+    <div style="margin-top:15px">
+        <button class="btn btn-info" id="Btn1">Gönder</button>
+    </div>
+</form>
+
+
+

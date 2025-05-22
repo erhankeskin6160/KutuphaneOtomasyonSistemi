@@ -1,0 +1,28 @@
+﻿ @model List<Notifications>
+@{
+    ViewBag.Title = "Duyurular";
+    Layout = null;
+}
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<h2>Duyurular</h2>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Kategori</th>
+        <th>Tarih</th>
+        <th>İçerik</th>
+    </tr>
+    @foreach (var notifications in Model)
+    {
+        <tr>
+            <td>@notifications.Subject</td>
+           
+            <td>@notifications.Content</td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,51 @@
+﻿ 
+     @model Book
+    @{
+        ViewData["Title"] = "AddBook";
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    }
+
+ 
+    <form asp-controller="Admin" asp-action="AddBook" method="post" enctype="multipart/form-data">
+
+ 
+         <input type="hidden" asp-for=BookId value="" class="form-controll"/>
+         
+
+
+    
+
+        <label>Book Name</label>
+         <input type="text" asp-for="BookName" value=""  class="form-control"/>
+
+
+        <label>Author</label>
+        <input type="text" asp-for="Author.AuthorName" value="" class="form-control"/>
+
+        <label>ISBN</label>
+        <input type="text" asp-for="ISBN" value="" class="form-control" />
+
+        <label>AssetNumber</label>
+        <input type="text" asp-for="AssetNumber" value="" class="form-control" />
+
+
+        <label>Publisher</label>
+        <input type="text" asp-for="Publisher" value="" class="form-control" />
+
+
+        <label>PublicationYear</label>
+        <input type="date" asp-for="PublicationYear" value="" class="form-control" />
+
+        <label>Resmi Yükle</label>
+        <input type="file" asp-for="BookImage"   /><br />
+
+         @Html.LabelFor(x=>x.CategoryId);
+    @Html.DropDownListFor(x => x.CategoryId, (IEnumerable<SelectListItem>)ViewBag.Categories, "Lütfen Bir Kategori Şeçiniz", new { @class = "form-control" })
+    
+     
+
+        <input type="submit" name="name" value="Gönder" class="btn btn-info mt-3" />
+   
+    </form>
+ 

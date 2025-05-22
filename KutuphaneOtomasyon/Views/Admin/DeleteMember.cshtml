@@ -1,0 +1,66 @@
+﻿@model List<User>
+
+@{
+    ViewData["Title"] = "Members";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+
+<head>
+    @* <link href="/css/AdminController/Members.css" rel="stylesheet" />
+    *@
+    <link href="/css/Member/Member.css" rel="stylesheet" />
+
+</head>
+<body>
+    <table class="table table-striped ">
+        <form asp-controller="Admin" asp-action="DeleteMember" method="post">
+
+        <thead>
+        <th>Idd</th>
+        <th>Full Name</th>
+        <th>User Name</th>
+        <th>Şifre</th>
+        <th>E-Mail</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>UserImg</th>
+        <th class="col-2">Eylemler</th>
+
+        </th>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@item.Id</td>
+                <td>@{
+                            @item.Name
+                        } @{
+                            @item.Surname
+                        }</td>
+                <td>@item.Username</td>
+                <td>@item.Password</td>
+                <td>@item.Email</td>
+                <td>@item.Phone</td>
+                <td>@item.Address</td>
+                <td>
+                    <div class="cerceve" typeof="image">
+                        <img src="/User/@item.UserImg" alt="Kullanıcı Resmi" />
+                    </div>
+                </td>
+
+                <td>
+                    
+
+                        <button class="btn btn-danger" type="submit"><a href="/Admin/DeleteMember/@item.Id" class="btn btn-danger">Kullanıcı Sil</a></button>
+                
+                 </td>
+
+            </tr>
+
+            }
+    </form>
+    </table>
+
+
+</body>

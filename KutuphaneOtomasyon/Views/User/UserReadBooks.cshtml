@@ -1,0 +1,320 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Okunan Kitaplar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --text-color: #2b2d42;
+            --light-text: #8d99ae;
+            --bg-transparent: rgba(255, 255, 255, 0.9);
+            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            --gray-background: #f0f2f5; /* Gri-mavi arkaplan rengi */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--gray-background); /* Düz gri arkaplan */
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-space {
+            height: 15vh;
+        }
+
+        .container {
+            margin-top:115px;
+            
+            width: 150%;
+              
+         
+            margin-top: 115px;
+            padding: 30px;
+            background: var(--bg-transparent);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 2rem;
+        }
+
+            h2 i {
+                margin-right: 10px;
+                color: var(--primary-color);
+            }
+
+        .books-container {
+            position: relative;
+            padding: 0 50px;
+        }
+
+        .book-list {
+            display: flex;
+            gap: 25px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 20px 10px;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            scroll-snap-type: x mandatory;
+        }
+
+            .book-list::-webkit-scrollbar {
+                display: none;
+            }
+
+        .book-card {
+            background: var(--bg-transparent);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: calc(50% - 30px);
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            scroll-snap-align: start;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            min-height: 380px;
+        }
+
+            .book-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            }
+
+            .book-card img {
+                width: 140px;
+                height: 200px;
+                object-fit: cover;
+                margin-bottom: 15px;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
+
+        .book-info {
+            text-align: center;
+            width: 100%;
+        }
+
+        .book-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .book-author {
+            font-size: 1rem;
+            color: var(--light-text);
+            font-weight: 400;
+            margin-bottom: 5px;
+        }
+
+        .book-description {
+            font-size: 0.8rem;
+            color: var(--light-text);
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .read-date {
+            font-size: 0.75rem;
+            color: var(--light-text);
+            margin-top: auto;
+            font-style: italic;
+        }
+
+        .scroll-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary-color);
+            border: none;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+            .scroll-button:hover {
+                background: var(--secondary-color);
+                transform: translateY(-50%) scale(1.1);
+            }
+
+            .scroll-button.left {
+                left: 0;
+            }
+
+            .scroll-button.right {
+                right: 0;
+            }
+
+            .scroll-button i {
+                font-size: 1.2rem;
+            }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 10px;
+        }
+
+        .page-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(67, 97, 238, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .page-dot.active {
+                background: var(--primary-color);
+                transform: scale(1.2);
+            }
+
+        media (max-width: 768px) {
+            .container
+
+        {
+            width: 95%;
+            padding: 20px;
+        }
+
+        .books-container {
+            padding: 0 20px;
+        }
+
+        .book-card {
+            width: calc(100% - 30px);
+            min-height: 350px;
+        }
+
+        .scroll-button {
+            width: 40px;
+            height: 40px;
+        }
+
+        .book-card img {
+            width: 120px;
+            height: 180px;
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="header-space"></div> <!-- %15 boşluk eklendi -->
+
+    <div class="container col-12">
+        <h2><i class="fa-solid fa-book-open-reader"></i> Okuduğum Kitaplar</h2>
+
+        <div class="books-container">
+            <button class="scroll-button left" onclick="scrollBooks(-1)"><i class="fas fa-chevron-left"></i></button>
+            <div class="book-list" id="bookList">
+                @foreach (var item in (List<BookLoan>)ViewData["UserBooks"])
+                {
+                    <div class="book-card">
+                        <img src="/Resimler/Kitaplar/@item.Book.BookImage" alt="@item.Book.BookName">
+                        <div class="book-info">
+                            <div class="book-title">@item.Book.BookName</div>
+                            <div class="book-author">@item.Book.Author.AuthorName</div>
+                            
+                            <div class="read-date">Okundu: @item.DeliveryDate.ToString("dd MMMM yyyy")</div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <button class="scroll-button right" onclick="scrollBooks(1)"><i class="fas fa-chevron-right"></i></button>
+        </div>
+
+        <div class="pagination" id="pagination">
+            <!-- Sayfa noktaları JavaScript ile eklenecek -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const bookList = document.getElementById('bookList');
+            const pagination = document.getElementById('pagination');
+            const books = document.querySelectorAll('.book-card');
+            const booksPerPage = 2; // Sayfa başına 2 kitap
+
+            // Toplam sayfa sayısını hesapla
+            const pageCount = Math.ceil(books.length / booksPerPage);
+
+            // Pagination noktalarını oluştur
+            for (let i = 0; i < pageCount; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'page-dot' + (i === 0 ? ' active' : '');
+                dot.dataset.index = i;
+                dot.addEventListener('click', function() {
+                    goToPage(parseInt(this.dataset.index));
+                });
+                pagination.appendChild(dot);
+            }
+
+            // Sayfaya git fonksiyonu
+            function goToPage(pageIndex) {
+                const scrollPosition = pageIndex * (books[0].offsetWidth + 25) * booksPerPage;
+                bookList.scrollTo({
+                    left: scrollPosition,
+                    behavior: 'smooth'
+                });
+
+                // Aktif noktayı güncelle
+                document.querySelectorAll('.page-dot').forEach((dot, index) => {
+                    dot.classList.toggle('active', index === pageIndex);
+                });
+            }
+
+            // Scroll sonrası aktif sayfayı güncelle
+            bookList.addEventListener('scroll', function() {
+                const scrollPosition = bookList.scrollLeft;
+                const activePage = Math.round(scrollPosition / ((books[0].offsetWidth + 25) * booksPerPage));
+
+                document.querySelectorAll('.page-dot').forEach((dot, index) => {
+                    dot.classList.toggle('active', index === activePage);
+                });
+            });
+        });
+
+        function scrollBooks(direction) {
+            const container = document.getElementById('bookList');
+            const scrollAmount = container.offsetWidth / 2; // Tam 1 sayfa kaydırma
+            container.scrollBy({
+                left: direction * scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+</html>
