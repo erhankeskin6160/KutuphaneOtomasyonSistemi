@@ -115,7 +115,7 @@ namespace KutuphaneOtomasyon.Controllers
         public IActionResult SearchBook(string key) //Kitap arama sistemi
 
         {
-            var searchbook = context.Books.Include(author => author.Author).Include(category => category.Category).Where(book => book.BookName.Contains(key) || book.Author.AuthorName.Contains(key)).ToList();
+            var searchbook = context.Books.Include(author => author.Author).Include(category => category.Category).Where(book => book.BookName.Contains(key) || book.Author.AuthorName.Contains(key) || book.ISBN.Contains(key)).ToList();
             ViewBag.searchbook = searchbook;
             if (searchbook.Count == 0)
             {
@@ -135,7 +135,8 @@ namespace KutuphaneOtomasyon.Controllers
             var userclaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (userclaim == null)
             {
-                return Unauthorized("Kullanıcı Oturum Açmadı");
+                TempData["Login"]= "Kitap Ödünç Alabilmeniz İçin Lütfen Öncelikle Oturum açın veya Sisteme Üye Olun";
+                return RedirectToAction("Index", "Login");
             }
             var userıd = Int32.Parse(userclaim.Value);
             int booktotal = context.BookLoans.Where(x => x.UserId == userıd && x.Status != BookLoan.LoanStatus.Returned).Count();
@@ -148,6 +149,8 @@ namespace KutuphaneOtomasyon.Controllers
                 return RedirectToAction("Mybook", "Profile");
 
             }
+
+
 
             if (booktotal >= 3)//Veri tabanından kullanıcının üzerindeki kitapları sayısını getirir 3 fazlaysa kitap almasını engeller
             {
@@ -191,6 +194,42 @@ namespace KutuphaneOtomasyon.Controllers
 
             return RedirectToAction("Index", "User");
         }
+
+
+
+        public IActionResult FavoriteBook(int BookId)
+        {
+             
+ 
+            var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = Convert.ToInt32(user);
+            if (userId == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            
+
+
+            bool isAlredyBook = context.Favorites.Any(f => f.BookId == BookId && f.UserId == userId);
+            if (isAlredyBook)
+            {
+                TempData["Error"] = "Bu dergi zaten favorilerinizde mevcut.";
+                return RedirectToAction("Index", "Home");
+            }
+            var bookFavorite = new Favorite
+            {
+                BookId = BookId,
+                UserId = userId,
+                Favorite_date = DateTime.Now.ToLocalTime(),
+            };
+            TempData["Succes"] = "Kitap Favorilere Eklendi.Profil Sayfasına Yönlediriliyorsunuz"; //Kitap favorilere eklendi mesajı verildi
+            context.Favorites.Add(bookFavorite);
+            context.SaveChanges();  
+
+            return RedirectToAction("Index", "Home");
+        }
+
         /// <summary>
         /// Kullanıcının kitap iaede etmesini sağlar
         /// </summary>
@@ -227,37 +266,7 @@ namespace KutuphaneOtomasyon.Controllers
         }
 
         //Sistem kitabı gecikterenleri bulup ceza yapan algoritma yapacağım
-        public IActionResult AddLateFees()
-        {
-            var userıd = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-
-            var deger = context.BookLoans.Where(x => x.UserId == userıd && x.ReturnDate == null && DateTime.Now > x.DeliveryDate).ToList();
-
-
-            int ceza = 0;
-
-            foreach (var item in deger)
-            {
-                int gecikensüre = (DateTime.Now - item.DeliveryDate).Days;
-                int cezamiktarı = 10 * gecikensüre;
-                ceza = ceza + cezamiktarı;
-
-                item.Status = BookLoan.LoanStatus.Overdue;
-            }
-
-            var user = context.Users.FirstOrDefault(x => x.Id == userıd);
-            if (user != null && ceza > 0)
-            {
-                user.Balance += ceza;
-            }
-
-            context.SaveChanges();
-
-
-            return RedirectToAction("Profile", "User");
-
-
-        }
+       
     }
 }
  

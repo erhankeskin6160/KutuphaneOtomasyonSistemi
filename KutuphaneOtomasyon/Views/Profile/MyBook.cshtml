@@ -54,8 +54,11 @@
 
 
 <div class="row">
+    @{int  sayac = 0;}
     @foreach (var bookLoan in Model)
     {
+
+       
         <div class="col-md-3 mb-4">
             <div class="card shadow">
                 <img src="@bookLoan.Book.BookImage" class="card-img-top" alt="Kitap Resmi" style="height: 27.5rem;width:auto; background-size:cover">
@@ -64,10 +67,28 @@
                     <p class="fw-lighter" style="margin-left:2px;">📅 Aldığı Tarih: @bookLoan.LoanDate.ToShortDateString()</p>
                     <p class="fw-lighter">⏰ Teslim Tarihi: @bookLoan.DeliveryDate.ToShortDateString()</p>
                     <p class="fw-lighter">📚 Kategori: @bookLoan.Book.Category.CategoryName</p>
-                    <a href="@Url.Action("ReturnBook", "Book", new {loanıd =bookLoan.Id })" class="btn btn-danger text-center ms-5">Kitabı Teslim</a>
+                    @if ((bookLoan.Status!=BookLoan.LoanStatus.Returned  ))
+                    {
+                         <a href="@Url.Action("ReturnBook", "Book", new {loanıd =bookLoan.Id })" class="btn btn-danger text-center ms-5">Kitabı Teslim Et</a>
+                    }
+                   
                 </div>
             </div>
+            
+
         </div>
+
+        sayac++;
+
+        if (sayac % 4==0)
+        {
+           <div class="w-100"><hr /></div>
+        
+        }
+           
+
+        
+       
     }
 </div>
 

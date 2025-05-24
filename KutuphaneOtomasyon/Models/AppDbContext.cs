@@ -35,5 +35,7 @@ namespace KutuphaneOtomasyon.Models
         public DbSet<Message> Messages { get; set; }    
 
         public DbSet<CartItem> CartItems { get; set; }
+
+        public DbSet<Favorite> Favorites { get; set; }
     }
 }

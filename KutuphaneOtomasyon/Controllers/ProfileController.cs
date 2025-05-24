@@ -39,7 +39,7 @@ namespace KutuphaneOtomasyon.Controllers
             var userId = Int32.Parse(user.Value);
             ViewBag.bookname=bookname;
 
-            var books=context.BookLoans.Include(x => x.User).Include(x=>x.Book).ThenInclude(x=>x.Category).Where(x=>x.UserId==userId && x.ReturnDate==null).ToList();
+            var books=context.BookLoans.Include(x => x.User).Include(x=>x.Book).ThenInclude(x=>x.Category).Where(x=>x.UserId==userId && (x.ReturnDate==null ||x.Status.Equals(2)==false) ).ToList();
 
             if (!String.IsNullOrEmpty(bookname)) 
             {

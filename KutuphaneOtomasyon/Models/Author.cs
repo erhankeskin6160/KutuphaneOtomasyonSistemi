@@ -12,9 +12,9 @@ namespace KutuphaneOtomasyon.Models
         
       public  string AuthorName { get; set; }
 
-     
+     public string ?Image { get; set; } = "/images/default-author.jpg"; // Yazar resmi için varsayılan bir resim yolu
 
-       
+
 
         public List<Book> Books { get; set; }
 

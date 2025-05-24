@@ -26,11 +26,14 @@ namespace KutuphaneOtomasyon.Controllers
             ViewBag.toplanalınankitap = toplanalınanankitap;
 
             var userBooks = dbcontext.BookLoans.Include(x => x.Book).ThenInclude(a=>a.Author).Where(x => x.UserId == userıd).ToList();
+            var userFavoriteBooks = dbcontext.Favorites.Include(x => x.Book).ThenInclude(author => author.Author).Where(x => x.UserId == userıd).ToList();
+
             ViewData["UserBooks"] = userBooks;
+            ViewData["UserFavorite"] = userFavoriteBooks;
             var userbook = dbcontext.BookLoans.Include(x => x.Book).Where(x => x.UserId == userıd).ToList();
 
-            var usercart = dbcontext.CartItems.Where(x=>x.Id==userıd).ToList(); //Kullanıcının seppeteki kitao sayısını aldık
-            ViewBag.usercart = usercart.Count().ToString(); 
+            var usercart = dbcontext.CartItems.Where(x=>x.UserId==userıd).ToList(); //Kullanıcının seppeteki kitao sayısını aldık
+            ViewBag.usercart = usercart.Count().ToString()?? "0"; 
 
 
             return View(bakiye);
@@ -75,6 +78,10 @@ namespace KutuphaneOtomasyon.Controllers
         {
              
             return PartialView( );
+        }
+        public IActionResult UserFavoriteBooks() 
+        {
+            return PartialView();
         }
 
         [HttpGet]

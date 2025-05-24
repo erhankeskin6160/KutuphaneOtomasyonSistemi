@@ -12,6 +12,7 @@ namespace KutuphaneOtomasyon.Models
             Returned,   // İade Edildi
             Overdue     // Gecikti
         }
+       
         public int Id{ get; set; }
         public int UserId { get; set; }//Kitabın Kimin ALdığını Tutmak İçin
         public int BookId { get; set; }//Kitap Id hangi kitabın alındığı tutmak için

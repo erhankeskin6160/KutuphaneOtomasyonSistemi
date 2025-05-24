@@ -8,4 +8,8 @@
 <hr />
 
 
-@await Html.PartialAsync("UserReadBooks", (List<KutuphaneOtomasyon.Models.BookLoan>)ViewData["UserBooks"])
+@await Html.PartialAsync("UserReadBooks", (List<BookLoan>)ViewData["UserBooks"])
+    <hr />
+
+@await Html.PartialAsync("UserFavoriteBooks", (List<Favorite>)ViewData["UserFavorite"])
+

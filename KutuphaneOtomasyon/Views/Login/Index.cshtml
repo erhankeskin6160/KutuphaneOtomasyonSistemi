@@ -32,33 +32,30 @@
 
     }  
 
+     @if (TempData["Login"]!=null)
+    {
+        <div id="Login" class="alert alert-info mt-1" role="alert">
+            @TempData["Login"]
+        </div>
+    }
+
     <script>
-        setTimeout(function () {
-            var alert = document.getElementById("succeslogin");
-            if (alert) {
-                alert.style.transition = "opacity 0.5s ease-out";
-                alert.style.opacity = "0";
+        function fadeOutAlert(id, delay = 5000) {
+            setTimeout(function () {
+                var alert = document.getElementById(id);
+                if (alert) {
+                    alert.style.transition = "opacity 0.5s ease-out";
+                    alert.style.opacity = "0";
+                    setTimeout(function () {
+                        alert.remove();
+                    }, 500);
+                }
+            }, delay);
+        }
 
-                // Tamamen gizlemek için DOM'dan da kaldırmak istersen:
-                setTimeout(function () {
-                    alert.remove();
-                }, 500);
-            }
-        }, 3000); // 3000 milisaniye = 3 saniye
-
-
-        setTimeout(function () {
-            var alert = document.getElementById("loginErrorAlert");
-            if (alert) {
-                alert.style.transition = "opacity 0.5s ease-out";
-                alert.style.opacity = "0";
-
-                // Tamamen gizlemek için DOM'dan da kaldırmak istersen:
-                setTimeout(function () {
-                    alert.remove();
-                }, 500);
-            }
-        }, 3000); // 3000 milisaniye = 3 saniye
+        fadeOutAlert("succeslogin");
+        fadeOutAlert("loginErrorAlert");
+        fadeOutAlert("Login");
     </script>
 
     <div class="grid align__item d-flex justify-content-center" style="position:relative;min-height:100%;">

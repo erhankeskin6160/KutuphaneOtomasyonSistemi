@@ -28,13 +28,35 @@ namespace KütüphaneOtomasyonSistemi.Controllers
                 .ToList();
 
 
-            var newbook=dbcontext.Books
+            var newbook=dbcontext.Books.Where(x=>x.Quantity>0)
                 .OrderByDescending(x => x.BookId)
                 .Take(4)
                 .ToList();
 
+            var announcements = dbcontext.Notifications.AsEnumerable().OrderByDescending(x=>x.Id).TakeLast(2).ToList();
+
+
+            /***** Haftanın Yazarı***/
+
+            
+
+            DateTime now = DateTime.Now;
+            int diff = (7 + (int)now.DayOfWeek - (int)DayOfWeek.Monday) % 7;
+            DateTime StartOfWeek = now.AddDays(-diff);
+            DateTime endOfWeek = StartOfWeek.AddDays(7);
+
+            var topauthor = dbcontext.BookLoans.Where(BookLoan => BookLoan.LoanDate >= StartOfWeek && BookLoan.LoanDate <= endOfWeek).Include(x => x.Book).ThenInclude(x => x.Author).GroupBy(x => x.Book.AuthorId).Select(g => new 
+            
+            { AuthorId = g.Key, BorrowCount = g.Count(), AuthorName = g.First().Book.Author.AuthorName, AuthorImage =g.First().Book.Author.Image
+            
+            }).OrderByDescending(count => count.BorrowCount).Take(3).ToList();
+
+            /************************/
+
             ViewBag.rastgelekitap = rastgelekitap;
             ViewBag.newbook = newbook;
+            ViewBag.announcements = announcements;
+            ViewBag.topauthor = topauthor;
             return View(rastgelekitap);
         }
 
