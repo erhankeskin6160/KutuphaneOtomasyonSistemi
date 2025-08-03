@@ -1,34 +1,49 @@
 # 📚 Kütüphane Otomasyon Sistemi
 
-Bu proje, ASP.NET Core MVC mimarisi ile geliştirilmiş, rol bazlı yetkilendirmeye ve kullanıcı yönetimine sahip bir kütüphane otomasyon sistemidir. Sistem, kitap takibi, ödünç alma-iade işlemleri, kullanıcı kayıtları ve admin paneli gibi fonksiyonları içerir. Öğrenciler, üyeler ve yöneticiler için özel işlemler barındırır.
+Bu proje, ASP.NET Core MVC mimarisi ile geliştirilmiş, kullanıcı ve rol yönetimi bulunan, kitap takibi, ödünç alma-iade, ceza yönetimi ve e-posta entegrasyonlarını kapsayan bir otomasyon sistemidir. Gelişmiş filtreleme, admin paneli, reCAPTCHA koruması ve arka plan servisleriyle birlikte gerçek dünya senaryolarına uygundur.
 
 ---
 
-## 🚀 Özellikler
+## 🚀 Temel Özellikler
 
-- 🧾 **Üyelik Sistemi & Giriş Çıkış**
-  - Kayıt olma, giriş yapma, çıkış yapma
-  - Şifreyi unutma ve e-posta ile sıfırlama (Token tabanlı)
-  
-- 🛡 **Rol Bazlı Yetkilendirme**
-  - `Admin`, `Kütüphane Görevlisi` ve `Üye` rolleri
-  - Yalnızca adminlerin ulaşabildiği panel
-  
-- 📚 **Kitap Yönetimi**
-  - Kitap ekleme / güncelleme / silme
-  - Kategori, yazar, yayın evi gibi ilişkili bilgiler
-  
-- 🕓 **Ödünç Alma & İade Sistemi**
-  - Üyelerin kitap ödünç alma ve teslim tarihlerini takip
-  - Teslim edilmeyen kitaplar için uyarı mekanizması
-  
-- 📊 **Raporlama ve Listeleme**
-  - Admin için tüm üyeleri, kitapları, aktif ödünçleri listeleme
-  - Geç teslim edilen kitaplar
-  
-- 🔑 **Şifremi Unuttum Özelliği**
-  - Kullanıcılar e-posta adresi ile şifre sıfırlama linki alabilir
-  - `GeneratePasswordResetTokenAsync()` ve `Url.Action()` ile işlem yapılır
+### 👤 Üye İşlemleri
+- Üyelik kaydı, giriş/çıkış
+- Şifremi unuttum → Token + e-posta ile sıfırlama
+- Kendi ödünç alma geçmişini görüntüleme
+
+### 🛡 Rol Tabanlı Yetkilendirme
+- `Admin`, `Görevli`, `Üye` rollerine özel erişim
+- Admin paneline sadece yetkili kullanıcılar erişebilir
+
+### 📚 Kitap Yönetimi
+- Admin panelinde:
+  - Kitap ekleme / silme / güncelleme
+  - Yazar, kategori, yayınevi ilişkileri
+- Kitap arama ve filtreleme (kitap adı, yazar, ISBN ile)
+
+### 📥 Ödünç Alma / İade
+- Üyeler kitap ödünç alabilir
+- Süresi geçen kitaplar için otomatik ceza sistemi
+
+### 📈 Raporlama
+- Tüm kitap, kullanıcı, ödünç alma ve gecikme verileri listelenebilir
+- Aktif ve pasif üyelikler görüntülenebilir
+
+### 🔑 Şifremi Unuttum
+- ASP.NET Identity kullanılarak token ile parola sıfırlama yapılır
+- `MailKit` üzerinden SMTP ile e-posta gönderimi
+
+---
+
+## ⚙️ Arka Plan Servisleri (Services)
+
+| Dosya                      | Görev Açıklaması |
+|---------------------------|------------------|
+| `CezaService.cs`          | Gecikmiş kitaplar için ceza oluşturur |
+| `CezaArkaPlanService.cs`  | Ceza işlemlerini `BackgroundService` ile sürekli kontrol eder |
+| `EmailService.cs`         | Kullanıcılara e-posta gönderimi (şifre sıfırlama, uyarı) |
+| `GoogleReCaptchaService.cs` | Kullanıcı form işlemlerinde reCAPTCHA doğrulaması yapar |
+| `IsbnService.cs`          | Kitap eklerken ISBN sorgulaması yapar veya otomatik numara üretir |
 
 ---
 
@@ -37,13 +52,15 @@ Bu proje, ASP.NET Core MVC mimarisi ile geliştirilmiş, rol bazlı yetkilendirm
 | Teknoloji             | Açıklama                         |
 |----------------------|----------------------------------|
 | ASP.NET Core MVC     | Web uygulama çatısı              |
-| Entity Framework Core| ORM ve veritabanı işlemleri      |
+| Entity Framework Core| ORM / veritabanı işlemleri       |
 | Identity             | Kimlik ve rol yönetimi           |
-| MSSQL Server         | Veritabanı sistemi                |
-| Bootstrap 5          | UI tasarımı                      |
-| MailKit              | SMTP üzerinden e-posta gönderimi |
-| LINQ                 | Veri sorguları                   |
+| MailKit              | SMTP e-posta gönderimi           |
+| MSSQL Server         | Veritabanı                       |
+| LINQ                 | Sorgulama işlemleri              |
+| Bootstrap            | Responsive arayüz                |
+| Google reCAPTCHA     | Güvenlik                         |
+| BackgroundService    | Arka plan işlemleri              |
 
 ---
 
-#
+## 🗂️ Proje Yapısı
